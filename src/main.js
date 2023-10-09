@@ -19,10 +19,13 @@ import DefaultLayout from './layouts/Default.vue'
 import DashboardLayout from './layouts/Dashboard.vue'
 import DashboardRTLLayout from './layouts/DashboardRTL.vue'
 import router from './router'
+
 // import './plugins/click-away'
 
 import './scss/app.scss';
-
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './css/style.css'
 Vue.use(Antd);
 
 Vue.config.productionTip = false

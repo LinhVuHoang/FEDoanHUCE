@@ -30,6 +30,18 @@ let routes = [
 		component: () => import('../views/Layout.vue'),
 	},
 	{
+		path:'/TKBHocKy',
+		name:'TKBHocKy',
+		layout: "dashboard",
+		component:()=>import('../views/TKBHocKy')
+	},
+	{
+		path: '/DSSV/:MaLopHocPhan',
+		name: 'Danh sách sinh viên',
+		layout: "dashboard",
+		component: () => import('../views/DSSV'),
+	},
+	{
 		path: '/tables',
 		name: 'Tables',
 		layout: "dashboard",
@@ -59,6 +71,7 @@ let routes = [
 		},
 		component: () => import('../views/Profile.vue'),
 	},
+
 	{
 		path: '/sign-in',
 		name: 'Sign-In',
