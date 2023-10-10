@@ -91,7 +91,7 @@
                   <span style="color: blue" v-if="dtc.HoDem != null && dtc.Ten !=null">{{ dtc.HoDem + ' ' + dtc.Ten }}</span>
                 </td>
                 <td>
-              <span style="color: blue" v-for="(week, weekIndex) in getMaxWeeks(dtc.RankWeekList)">
+              <span style="color: blue" v-for="(week) in getMaxWeeks(dtc.RankWeekList)">
                 <!-- Kiểm tra nếu giá trị tồn tại và lớn hơn 10 -->
                 <span v-if="week == 10">-</span>
                 <!-- Nếu không, hiển thị dấu "-" -->
@@ -99,7 +99,7 @@
               </span>
                 </td>
 
-                <td ><router-link class="button" :to="'/DSSV/' +dt.MaLopHocPhan">
+                <td v-if="dtcIndex==0" :rowspan="dt.items.length"><router-link class="button" :to="'/DSSV/' +dt.MaLopHocPhan">
 
                   <a-icon style="font-size: 25px;color: #007bff" type="unordered-list"/>
                 </router-link></td>

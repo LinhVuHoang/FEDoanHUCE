@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <button @click="exportToExcel">Export to Excel</button>
     <div style="margin-top: 50px" class="col-md-12 container" >
       <label>Lớp: {{this.data[0].MaLopHocPhan}}</label><br>
       <label>Môn: {{this.data[0].TenMonHoc}}</label>
@@ -24,7 +24,7 @@
                   <span style="color: blue">{{sv.HoDem}} {{sv.Ten}}</span>
                 </td>
                 <td >
-                  <span style="color: blue">{{sv.TenLopHoc}}</span>
+                  <span style="color: blue">{{sv.TenLop}}</span>
                 </td>
                 <td >
                   <span style="color: blue">{{sv.NgaySinh2}}</span>
@@ -50,6 +50,7 @@
 </template>
 <script>
 import TKBHocKyService from "@/service/TKBHocKyService";
+import * as XLSX from "xlsx";
 export default {
   data(){
     return{
@@ -80,6 +81,39 @@ export default {
             }
           }
       )
+    },
+    exportToExcel() {
+      // Your data to be exported
+      const data = [
+        ['Name', 'Age'],
+        ['John', 30],
+        ['Jane', 28],
+        ['Doe', 35],
+      ];
+
+      // Create a new worksheet
+      const ws = XLSX.utils.aoa_to_sheet(data);
+
+      // Create a new workbook
+      const wb = XLSX.utils.book_new();
+
+      // Add the worksheet to the workbook
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+      // Generate a blob from the workbook
+      const blob = XLSX.write(wb, { bookType: 'xlsx', type: 'blob' });
+
+      // Create a downloadable link
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'exported-data.xlsx';
+
+      // Trigger a click event on the link to start the download
+      a.click();
+
+      // Release the URL object
+      window.URL.revokeObjectURL(url);
     },
   }
 }
