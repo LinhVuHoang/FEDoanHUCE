@@ -99,7 +99,7 @@
               </span>
                 </td>
 
-                <td v-if="dtcIndex==0" :rowspan="dt.items.length"><router-link class="button" :to="'/DSSV/' +dt.MaLopHocPhan">
+                <td v-if="dtcIndex==0" :rowspan="dt.items.length"><router-link class="button" :to="'/DSSV/' +dt.MaLopHocPhan+'/'+dt.MaLopHoc">
 
                   <a-icon style="font-size: 25px;color: #007bff" type="unordered-list"/>
                 </router-link></td>

@@ -36,7 +36,7 @@ let routes = [
 		component:()=>import('../views/TKBHocKy')
 	},
 	{
-		path: '/DSSV/:MaLopHocPhan',
+		path: '/DSSV/:MaLopHocPhan/:MaLopHoc',
 		name: 'Danh sách sinh viên',
 		layout: "dashboard",
 		component: () => import('../views/DSSV'),

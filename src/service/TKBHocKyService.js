@@ -11,8 +11,8 @@ class TKBHocKyService{
     getDotHocKy(){
         return http.get(URL_DotHK)
     }
-    getdssv(MaLopHocPhan){
-        return http.get(URL_DSSV+"/"+MaLopHocPhan)
+    getdssv(MaLopHocPhan,MaLopHoc){
+        return http.get(URL_DSSV+"/"+MaLopHocPhan+"/"+MaLopHoc)
     }
 }
 export default new TKBHocKyService()

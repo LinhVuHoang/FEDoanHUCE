@@ -1,27 +1,40 @@
 <template>
   <div>
-    <button @click="exportToExcel">Export to Excel</button>
     <div style="margin-top: 50px" class="col-md-12 container" >
-      <label>Lớp: {{this.data[0].MaLopHocPhan}}</label><br>
-      <label>Môn: {{this.data[0].TenMonHoc}}</label>
+      <label>Lớp: {{this.data[0].MaLopHoc}}</label><br>
+      <label>Môn: {{this.data[0].TenMonHoc}}</label><br>
+      <label>Sĩ số: {{this.data[0].SiSo}}</label>
+      <button @click="exportToExcel" style="float: right">Export to Excel</button>
       <div class="table-wrap">
         <table class="table table-bordered" style="--bs-table-bg: dodgerblue; border-right: black">
           <thead>
           <tr>
+            <th style="color: white">STT</th>
             <th style="color: white">Mã Sinh Viên</th>
             <th style="color: white">Tên Sinh Viên</th>
+            <th style="color: white">Email</th>
+            <th style="color: white">Số điện thoại</th>
             <th style="color: white">Lớp Học</th>
             <th style="color: white">Ngày Sinh</th>
           </tr>
           </thead>
           <tbody>
           <template >
-              <tr v-for="sv in data">
+              <tr v-for="(sv,index) in data">
+                <td >
+                  <span style="color: blue">{{index+1}}</span>
+                </td>
                 <td >
                   <span style="color: blue">{{sv.MaSinhVien}}</span>
                 </td>
                 <td >
                   <span style="color: blue">{{sv.HoDem}} {{sv.Ten}}</span>
+                </td>
+                <td  v-if="sv.Email">
+                  <span style="color: blue">{{sv.Email}}</span>
+                </td>
+                <td  v-if="sv.SoDienThoai">
+                  <span style="color: blue">{{sv.SoDienThoai}}</span>
                 </td>
                 <td >
                   <span style="color: blue">{{sv.TenLop}}</span>
@@ -50,7 +63,6 @@
 </template>
 <script>
 import TKBHocKyService from "@/service/TKBHocKyService";
-import * as XLSX from "xlsx";
 export default {
   data(){
     return{
@@ -63,12 +75,12 @@ export default {
     }
   },
   created() {
-    this.getDSSV(this.$route.params.MaLopHocPhan)
+    this.getDSSV(this.$route.params.MaLopHocPhan,this.$route.params.MaLopHoc)
 
   },
   methods:{
-    async getDSSV(MaLopHocPhan){
-      await TKBHocKyService.getdssv(MaLopHocPhan).then(
+    async getDSSV(MaLopHocPhan,MaLopHoc){
+      await TKBHocKyService.getdssv(MaLopHocPhan,MaLopHoc).then(
           rs=>{
             try{
               this.data=[]
