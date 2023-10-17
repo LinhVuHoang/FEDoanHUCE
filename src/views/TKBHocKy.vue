@@ -99,7 +99,7 @@
               </span>
                 </td>
 
-                <td v-if="dtcIndex==0" :rowspan="dt.items.length"><router-link class="button" :to="'/DSSV/' +dt.MaLopHocPhan+'/'+dt.MaLopHoc">
+                <td v-if="dtcIndex==0" :rowspan="dt.items.length"><router-link class="button" :to="'/DSSV/' +dt.MaLopHocPhan+'/'+dt.MaLopHoc+'/'+params.hocky">
 
                   <a-icon style="font-size: 25px;color: #007bff" type="unordered-list"/>
                 </router-link></td>
@@ -143,10 +143,12 @@ export default {
         hocky:undefined,
         orderby:"MaMonHoc"
       },
+      IDDot:undefined,
       datahk:[]
     }
   },
   created() {
+    localStorage.setItem('link',this.$route.fullPath);
     this.getTKBHocKy()
 
   },

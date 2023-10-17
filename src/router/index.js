@@ -36,8 +36,14 @@ let routes = [
 		component:()=>import('../views/TKBHocKy')
 	},
 	{
-		path: '/DSSV/:MaLopHocPhan/:MaLopHoc',
-		name: 'Danh sách sinh viên',
+		path:'/TKBLichThi',
+		name:'TKBLichThi',
+		layout: "dashboard",
+		component:()=>import('../views/TKBLichThi')
+	},
+	{
+		path: '/DSSV/:MaLopHocPhan/:MaLopHoc/:TenDot',
+		name: 'DSSV',
 		layout: "dashboard",
 		component: () => import('../views/DSSV'),
 	},
@@ -119,6 +125,19 @@ const router = new VueRouter({
 			y: 0,
 			behavior: 'smooth',
 		}
+	}
+})
+router.beforeEach((to, from, next) => {
+	let token = localStorage.getItem('access_token');
+	if (to.name !== 'Sign-In' && !token) {
+		next({ name: 'Sign-In' });
+		}
+	else if(to.name ==='Sign-In' && token){
+		localStorage.removeItem('access_token');
+		next({name:'Sign-In'})
+	}
+	else {
+		next();
 	}
 })
 

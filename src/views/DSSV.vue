@@ -80,15 +80,18 @@ export default {
     }
   },
   created() {
-    this.getDSSV(this.$route.params.MaLopHocPhan,this.$route.params.MaLopHoc)
+    localStorage.setItem('link',this.$route.fullPath);
+    this.getDSSV(this.$route.params.MaLopHocPhan,this.$route.params.MaLopHoc,this.$route.params.TenDot)
 
   },
   methods:{
-    async getDSSV(MaLopHocPhan,MaLopHoc){
-      await TKBHocKyService.getdssv(MaLopHocPhan,MaLopHoc).then(
+    async getDSSV(MaLopHocPhan,MaLopHoc,TenDot){
+      console.log(TenDot)
+      await TKBHocKyService.getdssv(MaLopHocPhan,MaLopHoc,TenDot).then(
           rs=>{
             try{
               this.data=[]
+              console.log(rs)
               this.data =  rs.data.result.recordset;
               for (let i = 0; i < this.data.length; i++) {
                 this.data[i].STT = i + 1; // Bắt đầu index từ 1 hoặc 0 tùy theo tùy chọn của bạn

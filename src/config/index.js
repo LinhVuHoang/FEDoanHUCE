@@ -11,22 +11,22 @@ const http = axios.create(configAxios) // tạo ra một đối tượng axios v
 const handlerError = (error)=>{
     if(error.response.status === 401){
         localStorage.removeItem('access_token');
-        router.push({name:'Login'})
-        var errorrole = document.getElementById('error-role')
+        router.push({name:'Sign-In'})
+        var errorrole = document.getElementById('error-password')
         errorrole.innerText="Sai tài khoản hoặc mật khẩu"
     }
     return Promise.reject(error.response) //reject là hàm sẽ được gọi khi có lỗi xảy ra
 }
-// http.interceptors.request.use((config) => {
-//     let token = localStorage.getItem('access_token');
-//     if (token) {
-//         config.headers = {
-//             ...config.headers,
-//             'x-access-token':token
-//         };
-//     }
-//     return config;
-// }, handlerError)
+http.interceptors.request.use((config) => {
+    let token = localStorage.getItem('access_token');
+    if (token) {
+        config.headers = {
+            ...config.headers,
+            'x-access-token':token
+        };
+    }
+    return config;
+}, handlerError)
 
 http.interceptors.response.use((res) => {
     return Promise.resolve(res); //resolve là hàm sẽ được gọi khi promise hoàn thành
