@@ -35,9 +35,11 @@
                 <td  v-if="sv.Email">
                   <span style="color: blue">{{sv.Email}}</span>
                 </td>
+                <td v-else></td>
                 <td  v-if="sv.SoDienThoai">
                   <span style="color: blue">{{sv.SoDienThoai}}</span>
                 </td>
+                <td v-else></td>
                 <td >
                   <span style="color: blue">{{sv.TenLop}}</span>
                 </td>
@@ -129,21 +131,61 @@ export default {
       const worksheet = workbook.addWorksheet("Danh sách sinh viên");
       const studentData=this.OrderProperties(this.customizeData(this.data))
       console.log(studentData)
-      const titleRow = worksheet.addRow(["DANH SÁCH SINH VIÊN LỚP HỌC PHẦN"]);
-      titleRow.font = { size: 16, bold: true }; // Đặt kiểu chữ to và in đậm
-      const data = [
-        [" "," "," "," "," "," "," "," "],
-        [" "," "," "," "," "," "," "," "],
-        ["Mã học phần:", this.data[0].MaLopHocPhan," "," ","Học kỳ:",this.data[0].TenDot],
-        ["Tên học phần:", this.data[0].TenMonHoc," "," ","Lớp học:",this.data[0].MaLopHoc],
-        ["Sĩ số:", this.data[0].SiSo],
-        [" "," "," "," "," "," "," "," "],
-        [" "," "," "," "," "," "," "," "],
-        [" "," "," "," "," "," "," "," "],
-        [" "," "," "," "," "," "," "," "],
-        ["STT","Mã sinh viên","Họ Đệm","Tên","Email","Số điện thoại","Ngày Sinh","Lớp quản lý"]
-        // Add more rows as needed
-      ];
+      // Tạo các dòng dữ liệu
+      const data = [];
+
+      // Thêm dòng tiêu đề
+      data.push(["DANH SÁCH SINH VIÊN LỚP HỌC PHẦN"]);
+      data.push([]); // Dòng trống
+      data.push([
+        "Mã học phần:",
+        this.data[0].MaLopHocPhan,
+        "",
+        "",
+        "Học kỳ:",
+        this.data[0].TenDot
+      ]);
+      data.push([
+        "Tên học phần:",
+        this.data[0].TenMonHoc,
+        "",
+        "",
+        "Lớp học:",
+        this.data[0].MaLopHoc
+      ]);
+      data.push(["Sĩ số:", this.data[0].SiSo]);
+      data.push([]); // Dòng trống
+      data.push([]); // Dòng trống
+      data.push([]); // Dòng trống
+      data.push([]); // Dòng trống
+
+      // Thêm tiêu đề cho bảng danh sách sinh viên
+      data.push([
+        "STT",
+        "Mã sinh viên",
+        "Họ Đệm",
+        "Tên",
+        "Email",
+        "Số điện thoại",
+        "Ngày Sinh",
+        "Lớp quản lý"
+      ]);
+      data[0].font= {size: 16, bold: true }
+      // const titleRow = worksheet.addRow(["DANH SÁCH SINH VIÊN LỚP HỌC PHẦN"]);
+      // titleRow.font = { size: 16, bold: true }; // Đặt kiểu chữ to và in đậm
+      // const data = [
+      //   [" "," "," "," "," "," "," "," "],
+      //   [" "," "," "," "," "," "," "," "],
+      //   ["Mã học phần:", this.data[0].MaLopHocPhan," "," ","Học kỳ:",this.data[0].TenDot],
+      //   ["Tên học phần:", this.data[0].TenMonHoc," "," ","Lớp học:",this.data[0].MaLopHoc],
+      //   ["Sĩ số:", this.data[0].SiSo],
+      //   [" "," "," "," "," "," "," "," "],
+      //   [" "," "," "," "," "," "," "," "],
+      //   [" "," "," "," "," "," "," "," "],
+      //   [" "," "," "," "," "," "," "," "],
+      //   ["STT","Mã sinh viên","Họ Đệm","Tên","Email","Số điện thoại","Ngày Sinh","Lớp quản lý"]
+      //   // Add more rows as needed
+      // ];
       for (let i=0;i<studentData.length;i++){
         const studentArray = Object.values(studentData[i])
         data.push(studentArray)
@@ -153,8 +195,6 @@ export default {
       data.forEach((row) => {
         worksheet.addRow(row);
       });
-
-      // Create a Blob from the Excel workbook
       const blob = await workbook.xlsx.writeBuffer();
 
       // Create a Blob URL and trigger a download

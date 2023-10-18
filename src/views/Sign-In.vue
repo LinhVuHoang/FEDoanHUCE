@@ -32,7 +32,7 @@
             <span id="error-password" style="color: red"></span>
 					</a-form-item>
 					<a-form-item class="mb-10">
-    					<a-switch v-model="rememberMe" /> Remember Me
+            <a-switch v-model="rememberMe" /> Remember Me
 					</a-form-item>
 					<a-form-item>
 						<a-button type="primary" block html-type="submit" class="login-form-button">
@@ -77,14 +77,15 @@
 				// Binded model property for "Sign In Form" switch button for "Remember Me" .
 				rememberMe: true,
         form:{
-          Username:"",
-          Password:""
+          Username:"" || localStorage.getItem('rememberedUsername'),
+          Password:"" || localStorage.getItem('rememberedPassword')
         }
 			}
 		},
 		beforeCreate() {
 			// Creates the form and adds to it component's "form" property.
 			this.form = this.$form.createForm(this, { name: 'normal_login' });
+
 		},
 		methods: {
 			// Handles input validation after submission.
@@ -93,6 +94,13 @@
         if(!this.validate()){
           console.log("Lỗi validate")
           return
+        }
+        if (this.rememberMe) {
+          localStorage.setItem('rememberedUsername', this.form.Username);
+          localStorage.setItem('rememberedPassword', this.form.Password);
+        } else {
+          localStorage.removeItem('rememberedUsername');
+          localStorage.removeItem('rememberedPassword');
         }
         var errorrole =document.getElementById('error-password')
         const data = await LoginService.authenticate(this.form)

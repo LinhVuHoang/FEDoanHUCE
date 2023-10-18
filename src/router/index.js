@@ -48,6 +48,12 @@ let routes = [
 		component: () => import('../views/DSSV'),
 	},
 	{
+		path: '/DSDangKyHocPhan',
+		name: 'DSDangKyHocPhan',
+		layout: "dashboard",
+		component: () => import('../views/SVDSDangKyHocPhan'),
+	},
+	{
 		path: '/tables',
 		name: 'Tables',
 		layout: "dashboard",
@@ -129,12 +135,16 @@ const router = new VueRouter({
 })
 router.beforeEach((to, from, next) => {
 	let token = localStorage.getItem('access_token');
-	if (to.name !== 'Sign-In' && !token) {
-		next({ name: 'Sign-In' });
-		}
+	if (to.name !== 'Sign-In' && to.name !== 'Sign-Up' && !token) {
+			next({name: 'Sign-In'});
+	}
 	else if(to.name ==='Sign-In' && token){
 		localStorage.removeItem('access_token');
 		next({name:'Sign-In'})
+	}
+	else if(to.name ==='Sign-Up' && token){
+		localStorage.removeItem('access_token');
+		next({name:'Sign-Up'})
 	}
 	else {
 		next();
