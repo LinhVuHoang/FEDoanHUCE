@@ -134,58 +134,68 @@ export default {
       // Tạo các dòng dữ liệu
       const data = [];
 
-      // Thêm dòng tiêu đề
-      data.push(["DANH SÁCH SINH VIÊN LỚP HỌC PHẦN"]);
-      data.push([]); // Dòng trống
-      data.push([
-        "Mã học phần:",
-        this.data[0].MaLopHocPhan,
-        "",
-        "",
-        "Học kỳ:",
-        this.data[0].TenDot
-      ]);
-      data.push([
-        "Tên học phần:",
-        this.data[0].TenMonHoc,
-        "",
-        "",
-        "Lớp học:",
-        this.data[0].MaLopHoc
-      ]);
-      data.push(["Sĩ số:", this.data[0].SiSo]);
-      data.push([]); // Dòng trống
-      data.push([]); // Dòng trống
-      data.push([]); // Dòng trống
-      data.push([]); // Dòng trống
+      // Create a cell style for the title
+      const titleStyle = {
+        font: {
+          size: 16,
+          bold: true,
+        },
+        alignment: {
+          horizontal: 'center',
+        },
+      };
 
-      // Thêm tiêu đề cho bảng danh sách sinh viên
-      data.push([
-        "STT",
-        "Mã sinh viên",
-        "Họ Đệm",
-        "Tên",
-        "Email",
-        "Số điện thoại",
-        "Ngày Sinh",
-        "Lớp quản lý"
-      ]);
-      data[0].font= {size: 16, bold: true }
-      // const titleRow = worksheet.addRow(["DANH SÁCH SINH VIÊN LỚP HỌC PHẦN"]);
-      // titleRow.font = { size: 16, bold: true }; // Đặt kiểu chữ to và in đậm
-      // const data = [
-      //   [" "," "," "," "," "," "," "," "],
-      //   [" "," "," "," "," "," "," "," "],
-      //   ["Mã học phần:", this.data[0].MaLopHocPhan," "," ","Học kỳ:",this.data[0].TenDot],
-      //   ["Tên học phần:", this.data[0].TenMonHoc," "," ","Lớp học:",this.data[0].MaLopHoc],
-      //   ["Sĩ số:", this.data[0].SiSo],
-      //   [" "," "," "," "," "," "," "," "],
-      //   [" "," "," "," "," "," "," "," "],
-      //   [" "," "," "," "," "," "," "," "],
-      //   [" "," "," "," "," "," "," "," "],
-      //   ["STT","Mã sinh viên","Họ Đệm","Tên","Email","Số điện thoại","Ngày Sinh","Lớp quản lý"]
-      //   // Add more rows as needed
-      // ];
+      // Create a cell style for data
+      const dataCellStyle = {
+        font: {
+          size: 12,
+          bold: false, // Adjust as needed
+        },
+        alignment: {
+          horizontal: 'left',
+        },
+      };
+
+      // Merge cells for the title
+      worksheet.mergeCells('A1:H1');
+      worksheet.getCell('A1').value = "DANH SÁCH SINH VIÊN LỚP HỌC PHẦN";
+      worksheet.getCell('A1').style = titleStyle;
+
+      // Set data values for the information cells
+      worksheet.getCell('A2').value = "Mã học phần: "+this.data[0].MaLopHocPhan;
+      worksheet.getCell('E2').value = "Học kỳ: "+this.data[0].TenDot;;
+      worksheet.getCell('A3').value = "Tên học phần: " +this.data[0].TenMonHoc;;
+      worksheet.getCell('E3').value = "Lớp học: "+this.data[0].MaLopHoc;;
+      worksheet.getCell('A4').value = "Sĩ số: " +this.data[0].SiSo;;
+
+      // Apply data cell style to information cells
+      worksheet.getCell('A2').style = dataCellStyle;
+      worksheet.getCell('E2').style = dataCellStyle;
+      worksheet.getCell('A3').style = dataCellStyle;
+      worksheet.getCell('E3').style = dataCellStyle;
+      worksheet.getCell('A4').style = dataCellStyle;
+      // Apply the border style to hide gridlines in the range A1 to H4
+      const shadingStyle = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFFFFFFF' }, // Adjust the color as needed
+      };
+
+      // Apply the shading style to the range A1 to H4
+      for (let row = 1; row <= 5; row++) {
+        for (let col = 1; col <= 8; col++) {
+          worksheet.getCell(row, col).fill = shadingStyle;
+        }
+      }
+      // Add the title for the student data
+      worksheet.getCell('A6').value = "STT";
+      worksheet.getCell('B6').value = "Mã sinh viên";
+      worksheet.getCell('C6').value = "Họ Đệm";
+      worksheet.getCell('D6').value = "Tên";
+      worksheet.getCell('E6').value = "Email";
+      worksheet.getCell('F6').value = "Số điện thoại";
+      worksheet.getCell('G6').value = "Ngày Sinh";
+      worksheet.getCell('H6').value = "Lớp quản lý";
       for (let i=0;i<studentData.length;i++){
         const studentArray = Object.values(studentData[i])
         data.push(studentArray)

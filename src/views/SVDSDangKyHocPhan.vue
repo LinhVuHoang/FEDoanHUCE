@@ -158,7 +158,11 @@ export default ({
           rs=>{
             try{
               this.data=[]
-              this.data =  rs.data.records
+              if(rs.data.records != undefined) {
+                this.data = rs.data.records
+              }else {
+                this.data=[]
+              }
               console.log(this.data)
               this.totalRecords = rs.data.filtered;
               console.log(this.data)
