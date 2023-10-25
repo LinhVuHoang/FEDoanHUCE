@@ -5,19 +5,13 @@
     <template #title>
       <a-row type="flex" align="middle">
         <img style="width: 100%" src="/images/banner.png" alt="Banner"/>
-        <a-col :span="24" :md="12" :lg="12" style="position: relative;">
-
-          <h5 class="font-semibold m-0" v-if="data.length >0">Danh sách môn học đăng ký sinh viên {{data[0].HoTen}}</h5>
-          <h5 class="font-semibold m-0" v-else>Danh sách môn học đăng ký</h5>
-
-        </a-col>
       </a-row>
       <div>
         <a-form @submit="handleSearch" class="product__search-form">
           <a-row>
             <a-col :span="13" style="padding-right: 20px">
               <a-form-item >
-                <a-input-search  v-model="params.search" placeholder="Họ tên/ Mã sinh viên">
+                <a-input-search  v-model="params.search" placeholder="Mã Lớp/Mã môn/Tên môn">
                   <a-icon type="search"/>
                 </a-input-search>
               </a-form-item>
@@ -54,6 +48,13 @@
       <template slot="NgayDangKy" slot-scope="text">
         <div class="author-info"  >
           <p class="m-0 font-regular"  >{{ text.split('T')[0].split('-')[2]+"-"+text.split('T')[0].split('-')[1]+"-"+text.split('T')[0].split('-')[0] }}</p>
+        </div>
+      </template>
+      <template slot="editBtn" slot-scope="text">
+        <div>
+        <a class="button" :href="'/DSSV_LHP_SiSo/'+ text.MaMonHoc+'/'+text.LopDuKien+'/'+text.TenDot ">
+          <a-icon style="font-size: 25px;color: #007bff" type="info-circle"/>
+        </a>
         </div>
       </template>
     </a-table>
@@ -95,14 +96,13 @@ const columns = [
     scopedSlots: { customRender: 'LopDuKien' },
   },
   {
-    title: 'Trạng Thái Đăng Ký',
-    dataIndex: 'TrangThaiDangKy',
-    scopedSlots: { customRender: 'TrangThaiDangKy' },
+    title: 'Sĩ Số',
+    dataIndex: 'SiSoThucTe',
+    scopedSlots: { customRender: 'SiSoThucTe' },
   },
   {
-    title: 'Ngày Đăng Ký',
-    dataIndex: 'NgayDangKy',
-    scopedSlots: { customRender: 'NgayDangKy' },
+    title: 'DSSV',
+    scopedSlots: { customRender: 'editBtn' },
   },
 ];
 //Trong Vue.js, a-table hoặc các thành phần tương tự sẽ ưu tiên sử dụng dữ liệu từ data() nếu có. Nếu data() không chứa dữ liệu cụ thể, thì nó sẽ thử tìm dữ liệu từ props.
@@ -150,11 +150,11 @@ export default ({
       )
     },
     async getDangKyMonHoc(){
-
-      await DangKyHocPhanService.getSVDSDangKyHocPhan(this.params).then(
+      await DangKyHocPhanService.getDSLHPSiSo(this.params).then(
           rs=>{
             try{
               this.data=[]
+              console.log(rs)
               if(rs.data.records != undefined) {
                 this.data = rs.data.records
               }else {
@@ -183,25 +183,24 @@ export default ({
     handleSearch(e){
       e.preventDefault();
       this.params.page = 1;
-      if (this.params.hocky ===undefined){
-          this.params.hocky = this.datahk[0].TenDot
-          console.log(this.params.hocky)
+      if (this.params.hocky ==undefined){
+        console.log(this.datahk[0].TenDot)
+        this.params.hocky = this.datahk[0].TenDot
+        console.log(this.params.hocky)
       }
-      if(this.params.search !=="") {
         this.getDangKyMonHoc();
-      }
       console.log(this.params);
 
     },
     resetButton(){
       this.params = {
-        page:0,
-        limit:0,
+        page:1,
+        limit:10,
         search:"",
         hocky:this.datahk[0].TenDot,
         orderby:"MaMonHoc"
       }
-      this.data=[]
+      this.getDangKyMonHoc();
     },
   }
 })

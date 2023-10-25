@@ -1,6 +1,9 @@
 <template>
   <div>
     <a-card>
+      <a-row type="flex" align="middle">
+        <img style="width: 100%" src="/images/banner.png" alt="Banner"/>
+      </a-row>
       <div>
         <a-form @submit="handleSearch" class="product__search-form">
           <a-row>
@@ -192,29 +195,31 @@ export default {
     },
     getMaxWeeks(rankWeekList) {
       // Chuyển chuỗi thành mảng
-      const weeks = Array.from(new Set(rankWeekList.split(', ')))
-          .map(Number) // Chuyển chuỗi thành mảng số
-          .sort((a, b) => a - b);
+      if(rankWeekList) {
+        const weeks = Array.from(new Set(rankWeekList.split(', ')))
+            .map(Number) // Chuyển chuỗi thành mảng số
+            .sort((a, b) => a - b);
+        // Lấy giá trị tối đa
+        const maxWeek = weeks[weeks.length - 1];
 
-      // Lấy giá trị tối đa
-      const maxWeek = weeks[weeks.length-1];
+        // Tạo mảng chứa các giá trị từ 1 đến giá trị tối đa
+        const maxWeeks = [];
+        for (let i = 1; i <= maxWeek; i++) {
+          for (let j = 0; j < weeks.length; j++) {
+            if (weeks[j] == i) {
+              maxWeeks.push(weeks[j] % 10);
+              break;
+            }
+            if (j == weeks.length - 1 && weeks[weeks.length - 1] != i) {
+              maxWeeks.push(10);
+              break;
+            }
+          }
 
-      // Tạo mảng chứa các giá trị từ 1 đến giá trị tối đa
-      const maxWeeks = [];
-      for (let i = 1; i <= maxWeek; i++) {
-        for (let j=0;j<weeks.length;j++) {
-          if (weeks[j] == i) {
-            maxWeeks.push(weeks[j] % 10);
-            break;
-          }
-          if(j == weeks.length -1 && weeks[weeks.length-1] !=i){
-            maxWeeks.push( 10);
-            break;
-          }
         }
-
+        return maxWeeks;
       }
-      return maxWeeks;
+
     },
     onShowSizeChange(current, pageSize) {
       this.params.limit = pageSize;

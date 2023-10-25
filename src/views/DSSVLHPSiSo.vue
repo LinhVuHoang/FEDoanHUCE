@@ -5,9 +5,10 @@
       <img style="width: 100%" src="/images/banner.png" alt="Banner"/>
     </a-row>
     <div style="margin-top: 50px" class="col-md-12 container" >
+
       <label>Lớp: {{this.data[0].MaLopHoc}}</label><br>
       <label>Môn: {{this.data[0].TenMonHoc}}</label><br>
-      <label>Sĩ số: {{this.data[0].SiSo}}</label>
+      <label>Sĩ số: {{this.data.length}}</label>
       <button type="button" class="download-btn" style="float: right" v-on:click="exportToExcel">
         <a-icon type="file-excel" theme="filled"/>
       </button>
@@ -18,6 +19,7 @@
             <th style="color: white">STT</th>
             <th style="color: white">Mã Sinh Viên</th>
             <th style="color: white">Tên Sinh Viên</th>
+            <th style="color: white">Giới tính</th>
             <th style="color: white">Email</th>
             <th style="color: white">Số điện thoại</th>
             <th style="color: white">Lớp Học</th>
@@ -26,44 +28,47 @@
           </thead>
           <tbody>
           <template >
-              <tr v-for="(sv) in data">
-                <td >
-                  <span style="color: blue">{{sv.STT}}</span>
-                </td>
-                <td >
-                  <span style="color: blue">{{sv.MaSinhVien}}</span>
-                </td>
-                <td >
-                  <span style="color: blue">{{sv.HoDem}} {{sv.Ten}}</span>
-                </td>
-                <td  v-if="sv.Email">
-                  <span style="color: blue">{{sv.Email}}</span>
-                </td>
-                <td v-else></td>
-                <td  v-if="sv.SoDienThoai">
-                  <span style="color: blue">{{sv.SoDienThoai}}</span>
-                </td>
-                <td v-else></td>
-                <td >
-                  <span style="color: blue">{{sv.TenLop}}</span>
-                </td>
-                <td >
-                  <span style="color: blue">{{sv.NgaySinh2}}</span>
-                </td>
-              </tr>
+            <tr v-for="(sv) in data">
+              <td >
+                <span style="color: blue">{{sv.STT}}</span>
+              </td>
+              <td >
+                <span style="color: blue">{{sv.MaSinhVien}}</span>
+              </td>
+              <td >
+                <span style="color: blue">{{sv.HoDem}} {{sv.Ten}}</span>
+              </td>
+              <td >
+                <span style="color: blue">{{sv.GioiTinh}}</span>
+              </td>
+              <td  v-if="sv.Email">
+                <span style="color: blue">{{sv.Email}}</span>
+              </td>
+              <td v-else></td>
+              <td  v-if="sv.SoDienThoai">
+                <span style="color: blue">{{sv.SoDienThoai}}</span>
+              </td>
+              <td v-else></td>
+              <td >
+                <span style="color: blue">{{sv.TenLopHoc}}</span>
+              </td>
+              <td >
+                <span style="color: blue">{{sv.NgaySinh}}</span>
+              </td>
+            </tr>
           </template>
           </tbody>
         </table>
 
-<!--        <div style="padding-top: 15px">-->
-<!--          <a-pagination-->
-<!--              :default-current="this.params.limit"-->
-<!--              :total="this.totalRecords"-->
-<!--              show-size-changer-->
-<!--              @showSizeChange="onShowSizeChange"-->
-<!--              @change="onChange"-->
-<!--          />-->
-<!--        </div>-->
+        <!--        <div style="padding-top: 15px">-->
+        <!--          <a-pagination-->
+        <!--              :default-current="this.params.limit"-->
+        <!--              :total="this.totalRecords"-->
+        <!--              show-size-changer-->
+        <!--              @showSizeChange="onShowSizeChange"-->
+        <!--              @change="onChange"-->
+        <!--          />-->
+        <!--        </div>-->
       </div>
     </div>
 
@@ -71,7 +76,7 @@
   </a-card>
 </template>
 <script>
-import TKBHocKyService from "@/service/TKBHocKyService";
+import DangKyHocPhanService from "@/service/DangKyHocPhanService";
 // import exportFromJSON from "export-from-json";
 import ExcelJS from "exceljs";
 import * as XLSX from 'xlsx'
@@ -88,13 +93,15 @@ export default {
   },
   created() {
     localStorage.setItem('link',this.$route.fullPath);
-    this.getDSSV(this.$route.params.MaLopHocPhan,this.$route.params.MaLopHoc,this.$route.params.TenDot)
+    this.getDSSV(this.$route.params.MaMonHoc,this.$route.params.MaLopHoc,this.$route.params.TenDot)
 
   },
   methods:{
-    async getDSSV(MaLopHocPhan,MaLopHoc,TenDot){
+    async getDSSV(MaMonHoc,MaLopHoc,TenDot){
       console.log(TenDot)
-      await TKBHocKyService.getdssv(MaLopHocPhan,MaLopHoc,TenDot).then(
+      console.log(MaMonHoc)
+      console.log(MaLopHoc)
+      await DangKyHocPhanService.getDSSVLHPSiSo(MaMonHoc,MaLopHoc,TenDot).then(
           rs=>{
             try{
               this.data=[]
@@ -104,7 +111,7 @@ export default {
                 this.data[i].STT = i + 1; // Bắt đầu index từ 1 hoặc 0 tùy theo tùy chọn của bạn
               }
               console.log(this.data)
-             // this.totalRecords = rs.data.filtered;
+              // this.totalRecords = rs.data.filtered;
             }catch (e){
               console.log(e)
               console.log("Có lỗi")
@@ -162,7 +169,7 @@ export default {
       };
 
       // Merge cells for the title
-      worksheet.mergeCells('A1:H1');
+      worksheet.mergeCells('A1:I1');
       worksheet.getCell('A1').value = "DANH SÁCH SINH VIÊN LỚP HỌC PHẦN";
       worksheet.getCell('A1').style = titleStyle;
 
@@ -170,8 +177,8 @@ export default {
       worksheet.getCell('B2').value = "Mã học phần: "+this.data[0].MaLopHocPhan;
       worksheet.getCell('F2').value = "Học kỳ: "+this.data[0].TenDot;;
       worksheet.getCell('B3').value = "Tên học phần: " +this.data[0].TenMonHoc;;
-      worksheet.getCell('F3').value = "Lớp học: "+this.data[0].MaLopHoc;;
-      worksheet.getCell('B4').value = "Sĩ số: " +this.data[0].SiSo;;
+      worksheet.getCell('F3').value = "Lớp học: "+this.data[0].LopDuKien;;
+      worksheet.getCell('B4').value = "Sĩ số: " +this.data.length;;
 
       // Apply data cell style to information cells
       worksheet.getCell('B2').style = dataCellStyle;
@@ -188,7 +195,7 @@ export default {
 
       // Apply the shading style to the range A1 to H4
       for (let row = 2; row <= 5; row++) {
-        for (let col = 1; col <= 8; col++) {
+        for (let col = 1; col <= 9; col++) {
           worksheet.getCell(row, col).fill = shadingStyle;
         }
       }
@@ -197,10 +204,11 @@ export default {
       worksheet.getCell('B6').value = "Mã sinh viên";
       worksheet.getCell('C6').value = "Họ Đệm";
       worksheet.getCell('D6').value = "Tên";
-      worksheet.getCell('E6').value = "Email";
-      worksheet.getCell('F6').value = "Số điện thoại";
-      worksheet.getCell('G6').value = "Ngày Sinh";
-      worksheet.getCell('H6').value = "Lớp quản lý";
+      worksheet.getCell('E6').value = "Giới tính";
+      worksheet.getCell('F6').value = "Email";
+      worksheet.getCell('G6').value = "Số điện thoại";
+      worksheet.getCell('H6').value = "Ngày Sinh";
+      worksheet.getCell('I6').value = "Lớp quản lý";
       for (let i=0;i<studentData.length;i++){
         const studentArray = Object.values(studentData[i])
         data.push(studentArray)
@@ -225,12 +233,12 @@ export default {
     customizeData(data){
       return data.map((dssv)=>{
         // eslint-disable-next-line no-unused-vars
-        const{IDLopHocDanhNghia,IDLopHocPhan,TenDot,IDDot,MaLopHocPhan,MaLopHoc,TenMonHoc,IDLopHocphan,IDSinhVien,SiSo,...rest} = dssv;
+        const{IDLopHocPhan,MaMonHoc,TrangThaiDangKy,NgayDangKy,TenDot,SoTinChi,MaLopHocPhan,MaLopHoc,TenMonHoc,IDLopHoc,IDSinhVien,...rest} = dssv;
         return rest
       });
     },
     OrderProperties(data){
-      const newOrder = ["STT", "MaSinhVien", "HoDem", "Ten", "Email", "SoDienThoai", "NgaySinh2", "TenLop"];
+      const newOrder = ["STT", "MaSinhVien", "HoDem", "Ten","GioiTinh", "Email", "SoDienThoai", "NgaySinh", "TenLopHoc"];
       const newData = data.map((item) => Object.assign({}, ...newOrder.map((key) => ({ [key]: item[key] }))))
       console.log(newData)
       return newData;

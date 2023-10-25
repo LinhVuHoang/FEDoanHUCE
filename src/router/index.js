@@ -12,7 +12,7 @@ let routes = [
 	{
 		path: '/',
 		name: 'Home',
-		redirect: '/dashboard',
+		redirect: '/sign-in',
 	},
 	{
 		path: '/dashboard',
@@ -48,10 +48,22 @@ let routes = [
 		component: () => import('../views/DSSV'),
 	},
 	{
+		path: '/DSSV_LHP_SiSo/:MaMonHoc/:MaLopHoc/:TenDot',
+		name: 'DSSV_LHP_SiSo',
+		layout: "dashboard",
+		component: () => import('../views/DSSVLHPSiSo'),
+	},
+	{
 		path: '/DSDangKyHocPhan',
 		name: 'DSDangKyHocPhan',
 		layout: "dashboard",
 		component: () => import('../views/SVDSDangKyHocPhan'),
+	},
+	{
+		path: '/DS_LHP_SiSo',
+		name: 'DS_LHP_SiSo',
+		layout: "dashboard",
+		component: () => import('../views/DSLHPSiSo'),
 	},
 	{
 		path: '/tables',
@@ -116,7 +128,7 @@ function addLayoutToRoute( route, parentLayout = "default" )
 routes = routes.map( ( route ) => addLayoutToRoute( route ) ) ;
 
 const router = new VueRouter({
-	mode: 'hash',
+	mode: 'history',
 	base: process.env.BASE_URL,
 	routes,
 	scrollBehavior (to, from, savedPosition) {
