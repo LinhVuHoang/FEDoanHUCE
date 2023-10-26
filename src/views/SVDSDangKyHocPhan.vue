@@ -9,7 +9,6 @@
 
           <h5 class="font-semibold m-0" v-if="data.length >0">Danh sách môn học đăng ký sinh viên {{data[0].HoTen}}</h5>
           <h5 class="font-semibold m-0" v-else>Danh sách môn học đăng ký</h5>
-
         </a-col>
       </a-row>
       <div>
@@ -56,7 +55,16 @@
           <p class="m-0 font-regular"  >{{ text.split('T')[0].split('-')[2]+"-"+text.split('T')[0].split('-')[1]+"-"+text.split('T')[0].split('-')[0] }}</p>
         </div>
       </template>
+      <template slot="HocPhi" slot-scope="text">
+        <div class="author-info">
+          <p class="m-0 font-regular"> {{new Intl.NumberFormat('en-EN', { style: 'currency', currency: 'VND' }).format(text)}}</p>
+        </div>
+      </template>
     </a-table>
+    <div>
+    <h5 class="font-semibold m-0" style="float: right;padding-right: 50px" v-if="hocphi>0">Tổng học phí {{new Intl.NumberFormat('en-EN', { style: 'currency', currency: 'VND' }).format(hocphi)}}</h5>
+      <h5 v-else></h5>
+    </div>
     <div style="padding-top: 15px;padding-left: 15px">
       <a-pagination
           :default-current="this.params.limit"
@@ -100,6 +108,11 @@ const columns = [
     scopedSlots: { customRender: 'TrangThaiDangKy' },
   },
   {
+    title: 'Học phí',
+    dataIndex: 'MucHocPhi',
+    scopedSlots: { customRender: 'HocPhi' },
+  },
+  {
     title: 'Ngày Đăng Ký',
     dataIndex: 'NgayDangKy',
     scopedSlots: { customRender: 'NgayDangKy' },
@@ -127,13 +140,23 @@ export default ({
         hocky:undefined,
         orderby:"MaMonHoc"
       },
+      hocphi:undefined,
+      params1:{
+        page:1,
+        limit:10,
+        search:"",
+        hocky:undefined,
+        orderby:"MaMonHoc"
+      },
       IDDot:undefined,
-      datahk:[]
+      datahk:[],
+      datahp:[]
     }
   },
   created(){
     localStorage.setItem('link',this.$route.fullPath);
     this.getTKBDotHK()
+    this.getHocPhi()
   },
   methods:{
     async getTKBDotHK(){
@@ -170,6 +193,28 @@ export default ({
           }
       )
     },
+    async getHocPhi(){
+      this.params1.hocky=this.params.hocky
+      this.params1.search = this.params.search
+      this.params1.limit=10000
+      let price=0;
+      await DangKyHocPhanService.getSVDSDangKyHocPhan(this.params1).then(
+          rs => {
+            try {
+              this.data1 = rs.data.records;
+              if (this.data1.length > 0) {
+                for (let i = 0; i < this.data1.length; i++) {
+                  price = price + this.data1[i].MucHocPhi;
+                  console.log(price)
+                }
+                this.hocphi = price;
+              }
+            } catch (e) {
+              console.log(e)
+            }
+          }
+      )
+    },
     onShowSizeChange(current, pageSize) {
       this.params.limit = pageSize;
       this.params.page = current;
@@ -189,6 +234,7 @@ export default ({
       }
       if(this.params.search !=="") {
         this.getDangKyMonHoc();
+        this.getHocPhi()
       }
       console.log(this.params);
 
@@ -201,6 +247,7 @@ export default ({
         hocky:this.datahk[0].TenDot,
         orderby:"MaMonHoc"
       }
+      this.hocphi=undefined
       this.data=[]
     },
   }
