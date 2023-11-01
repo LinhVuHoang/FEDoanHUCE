@@ -16,7 +16,7 @@
           <a-row>
             <a-col :span="13" style="padding-right: 20px">
               <a-form-item >
-                <a-input-search  v-model="params.search" placeholder="Họ tên/ Mã sinh viên">
+                <a-input-search  v-model="params.search" placeholder="Mã sinh viên">
                   <a-icon type="search"/>
                 </a-input-search>
               </a-form-item>
@@ -47,7 +47,7 @@
           <p class="m-0 font-regular" style="color: dodgerblue">{{ text }}</p>
         </div>
         <div class="author-info"  v-else>
-          <p class="m-0 font-regular" style="color: grey">{{ text }}</p>
+          <p class="m-0 font-regular" style="color: red">{{ text }}</p>
         </div>
       </template>
       <template slot="NgayDangKy" slot-scope="text">
@@ -55,9 +55,10 @@
           <p class="m-0 font-regular"  >{{ text.split('T')[0].split('-')[2]+"-"+text.split('T')[0].split('-')[1]+"-"+text.split('T')[0].split('-')[0] }}</p>
         </div>
       </template>
-      <template slot="HocPhi" slot-scope="text">
+      <template slot="HocPhi" slot-scope="text,record">
         <div class="author-info">
-          <p class="m-0 font-regular"> {{new Intl.NumberFormat('en-EN', { style: 'currency', currency: 'VND' }).format(text)}}</p>
+          <p v-if="text!=0" class="m-0 font-regular"> {{new Intl.NumberFormat('en-EN', { style: 'currency', currency: 'VND' }).format(text)}}</p>
+          <p v-else-if="text==0" class="m-0 font-regular"> {{new Intl.NumberFormat('en-EN', { style: 'currency', currency: 'VND' }).format(325000*record.SoTinChi)}}</p>
         </div>
       </template>
     </a-table>
@@ -156,7 +157,6 @@ export default ({
   created(){
     localStorage.setItem('link',this.$route.fullPath);
     this.getTKBDotHK()
-    this.getHocPhi()
   },
   methods:{
     async getTKBDotHK(){
@@ -204,8 +204,12 @@ export default ({
               this.data1 = rs.data.records;
               if (this.data1.length > 0) {
                 for (let i = 0; i < this.data1.length; i++) {
-                  price = price + this.data1[i].MucHocPhi;
-                  console.log(price)
+                  if(this.data1[1].MucHocPhi >0) {
+                    price = price + this.data1[i].MucHocPhi;
+                    console.log(price)
+                  }else{
+                    price = price + this.data1[i].SoTinChi*325000;
+                  }
                 }
                 this.hocphi = price;
               }

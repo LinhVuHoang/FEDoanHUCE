@@ -42,7 +42,7 @@
           <p class="m-0 font-regular" style="color: dodgerblue">{{ text }}</p>
         </div>
         <div class="author-info"  v-else>
-          <p class="m-0 font-regular" style="color: grey">{{ text }}</p>
+          <p class="m-0 font-regular" style="color: red">{{ text }}</p>
         </div>
       </template>
       <template slot="NgayDangKy" slot-scope="text">

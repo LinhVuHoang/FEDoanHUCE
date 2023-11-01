@@ -6,7 +6,7 @@
     </a-row>
     <div style="margin-top: 50px" class="col-md-12 container" >
 
-      <label>Lớp: {{this.data[0].MaLopHoc}}</label><br>
+      <label>Lớp: {{this.$route.params.MaLopHoc}}</label><br>
       <label>Môn: {{this.data[0].TenMonHoc}}</label><br>
       <label>Sĩ số: {{this.data.length}}</label>
       <button type="button" class="download-btn" style="float: right" v-on:click="exportToExcel">
