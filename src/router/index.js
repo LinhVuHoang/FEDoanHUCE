@@ -66,6 +66,12 @@ let routes = [
 		component: () => import('../views/DSLHPSiSo'),
 	},
 	{
+		path: '/KetQuaHocTap',
+		name: 'KetQuaHocTap',
+		layout: "dashboard",
+		component: () => import('../views/KetQuaHocTap'),
+	},
+	{
 		path: '/tables',
 		name: 'Tables',
 		layout: "dashboard",
