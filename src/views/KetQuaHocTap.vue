@@ -25,7 +25,8 @@
     </div>
     <div style="margin-top: 50px" class="col-md-12 container" >
       <div style="border-bottom: 1px solid #b3b7bb; padding-bottom: 10px;">
-        <h5 style="vertical-align: baseline; color: #667580; line-height: 18px; font-family: Tahoma !important; margin: 0;">Kết quả học tập</h5>
+        <h5 v-if="Hoten" style="vertical-align: baseline; color: #667580; line-height: 18px; font-family: Tahoma !important; margin: 0;">Kết quả học tập sinh viên {{Hoten}} </h5>
+        <h5 v-else style="vertical-align: baseline; color: #667580; line-height: 18px; font-family: Tahoma !important; margin: 0;">Kết quả học tập </h5>
       </div>
       <div class="table-wrap" style="margin-top: 20px">
 
@@ -59,23 +60,88 @@
           </thead>
           <tbody>
           <template v-for="hk in datahk">
-          <template v-for="(dt) in data">
-<!--            <template v-for="(dtc, dtcIndex) in dt.items">-->
+          <template v-for="(dt,dtIndex) in data">
             <template v-if="hk==dt.TenDot">
+
             <tr >
                   <td id="cell" colspan="19" style="text-align: left;background-color: #f5f5f5;color:#578ebe;font-weight: 600;cursor: pointer;"><span>{{dt.TenDot}}</span></td>
             </tr>
+              <template v-for="(dtc, dtcIndex) in dt.items">
+              <tr>
+                <td id="cell"><span>{{dtcIndex+1 + getPreviousItemsCount(dtIndex)}}</span></td>
+                <td id="cell"><span>{{dtc.MaHocPhan}}</span></td>
+                <td  id="cell"><span>{{dtc.TenMonHoc}}</span></td>
+                <td id="cell"><span>{{dtc.MaLopHoc}}</span></td>
+                <td id="cell"><span>{{dtc.SoTinChi}}</span></td>
+                <td id="cell" ><span v-if="dtc.DiemChuyenCan1 >5">{{parseFloat(dtc.DiemChuyenCan1).toFixed(2)}}</span>
+                  <span v-else-if="dtc.DiemChuyenCan1 <=5 && dtc.DiemChuyenCan1 !==null" style="color: red">{{parseFloat(dtc.DiemChuyenCan1).toFixed(2)}}</span>
+                  <span v-else></span>
+<!--                  <span v-else-if="dtc.DiemChuyenCan1 ===null && dtc.DiemTBThuongKy >5">{{parseFloat(dtc.DiemTBThuongKy).toFixed(2)}}</span>-->
+<!--                  <span v-else-if="dtc.DiemChuyenCan1 ===null && dtc.DiemTBThuongKy<=5 && dtc.DiemTBThuongKy !==null" style="color: red">{{parseFloat(dtc.DiemTBThuongKy).toFixed(2)}}</span>-->
+                </td>
+                <td id="cell" ><span v-if="dtc.DiemThuongKy1 >5">{{parseFloat(dtc.DiemThuongKy1).toFixed(2)}}</span>
+                  <span v-else-if="dtc.DiemThuongKy1<=5 && dtc.DiemThuongKy1 !==null" style="color: red">{{parseFloat(dtc.DiemThuongKy1).toFixed(2)}}</span>
+                  <span v-else></span>
+                </td>
+                <td id="cell" ><span v-if="dtc.DiemThuongKy2 >5">{{parseFloat(dtc.DiemThuongKy2).toFixed(2)}}</span>
+                  <span v-else-if="dtc.DiemThuongKy2<=5 && dtc.DiemThuongKy2 !==null" style="color: red">{{parseFloat(dtc.DiemThuongKy2).toFixed(2)}}</span>
+                  <span v-else></span>
+                </td>
+                <td id="cell" ><span v-if="dtc.DiemTBThuongKy >5">{{parseFloat(dtc.DiemTBThuongKy).toFixed(2)}}</span>
+                  <span v-else-if="dtc.DiemTBThuongKy<=5 && dtc.DiemTBThuongKy !==null" style="color: red">{{parseFloat(dtc.DiemTBThuongKy).toFixed(2)}}</span>
+                  <span v-else></span>
+<!--                  <span v-else-if="!dtc.DiemTBThuongKy && dtc.DiemTBThuongKy <=5" style="color: red">{{parseFloat(dtc.DiemChuyenCan1).toFixed(2)}}</span>
+                  <span v-else-if="!dtc.DiemTBThuongKy && dtc.DiemTBThuongKy >5">{{parseFloat(dtc.DiemChuyenCan1).toFixed(2)}}</span>-->
+                </td>
+                <td id="cell"><span v-if="dtc.DuocDuThiKetThuc">
+                  <svg style="width: 20px;height: 20px" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg" version="1.1"  fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(0 -1028.4)"> <path d="m22 12c0 5.523-4.477 10-10 10-5.5228 0-10-4.477-10-10 0-5.5228 4.4772-10 10-10 5.523 0 10 4.4772 10 10z" transform="translate(0 1029.4)" fill="#27ae60"></path> <path d="m22 12c0 5.523-4.477 10-10 10-5.5228 0-10-4.477-10-10 0-5.5228 4.4772-10 10-10 5.523 0 10 4.4772 10 10z" transform="translate(0 1028.4)" fill="#2ecc71"></path> <path d="m16 1037.4-6 6-2.5-2.5-2.125 2.1 2.5 2.5 2 2 0.125 0.1 8.125-8.1-2.125-2.1z" fill="#27ae60"></path> <path d="m16 1036.4-6 6-2.5-2.5-2.125 2.1 2.5 2.5 2 2 0.125 0.1 8.125-8.1-2.125-2.1z" fill="#ecf0f1"></path> </g> </g></svg>
+                </span></td>
+                <td id="cell"><span v-if="dtc.DiemThi>5">{{parseFloat(dtc.DiemThi).toFixed(2)}}</span>
+                  <span v-else-if="dtc.DiemThi<=5 && dtc.DiemThi>0" style="color: red">{{parseFloat(dtc.DiemThi).toFixed(2)}}</span>
+                  <span v-else-if="!dtc.DiemThi && dtc.DiemThi1>5">{{parseFloat(dtc.DiemThi1).toFixed(2)}}</span>
+                  <span v-else-if="!dtc.DiemThi && dtc.DiemThi1<=5 && dtc.DiemThi1>0" style="color: red">{{parseFloat(dtc.DiemThi1).toFixed(2)}}</span>
+                  <span v-else-if="dtc.DiemThi ===0 || dtc.DiemThi1 ===0" style="color: red">0,00</span>
+                </td>
+                <td id="cell"><span v-if="dtc.DiemThi2">{{parseFloat(dtc.DiemThi2).toFixed(2)}}</span></td>
+                <td id="cell"><span v-if="dtc.VangThi">
+                                    <svg style="width: 20px;height: 20px" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg" version="1.1"  fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(0 -1028.4)"> <path d="m22 12c0 5.523-4.477 10-10 10-5.5228 0-10-4.477-10-10 0-5.5228 4.4772-10 10-10 5.523 0 10 4.4772 10 10z" transform="translate(0 1029.4)" fill="#27ae60"></path> <path d="m22 12c0 5.523-4.477 10-10 10-5.5228 0-10-4.477-10-10 0-5.5228 4.4772-10 10-10 5.523 0 10 4.4772 10 10z" transform="translate(0 1028.4)" fill="#2ecc71"></path> <path d="m16 1037.4-6 6-2.5-2.5-2.125 2.1 2.5 2.5 2 2 0.125 0.1 8.125-8.1-2.125-2.1z" fill="#27ae60"></path> <path d="m16 1036.4-6 6-2.5-2.5-2.125 2.1 2.5 2.5 2 2 0.125 0.1 8.125-8.1-2.125-2.1z" fill="#ecf0f1"></path> </g> </g></svg>
+                </span></td>
+                <td id="cell">
+                  <span v-if="dtc.DiemTongKet>5 && dtc.DiemTongKet !==null">{{parseFloat(dtc.DiemTongKet).toFixed(2)}}</span>
+                  <span v-else-if="dtc.DiemTongKet<=5 && dtc.DiemTongKet !==null" style="color: red">{{parseFloat(dtc.DiemTongKet).toFixed(2)}}</span>
+                </td>
+                <td id="cell"><span v-if="dtc.DiemTinChi !==null">{{parseFloat(dtc.DiemTinChi).toFixed(2)}}</span></td>
+                <td id="cell"><span v-if="!dtc.IsDat" style="color: red">{{dtc.DiemChu}}</span>
+                  <span v-else>{{dtc.DiemChu}}</span>
+                </td>
+                <td id="cell">
+                  <span v-if="dtc.IsDat && dtc.DiemTongKet !==null">Đạt</span>
+                  <span v-else-if="!dtc.IsDat && dtc.DiemTongKet !==null">Không đạt</span>
+                </td>
+                <td id="cell"><span></span></td>
+
+                <td id="cell"><span v-if="dtc.IsDat">
+                  <svg style="width: 20px;height: 20px" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg" version="1.1"  fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(0 -1028.4)"> <path d="m22 12c0 5.523-4.477 10-10 10-5.5228 0-10-4.477-10-10 0-5.5228 4.4772-10 10-10 5.523 0 10 4.4772 10 10z" transform="translate(0 1029.4)" fill="#27ae60"></path> <path d="m22 12c0 5.523-4.477 10-10 10-5.5228 0-10-4.477-10-10 0-5.5228 4.4772-10 10-10 5.523 0 10 4.4772 10 10z" transform="translate(0 1028.4)" fill="#2ecc71"></path> <path d="m16 1037.4-6 6-2.5-2.5-2.125 2.1 2.5 2.5 2 2 0.125 0.1 8.125-8.1-2.125-2.1z" fill="#27ae60"></path> <path d="m16 1036.4-6 6-2.5-2.5-2.125 2.1 2.5 2.5 2 2 0.125 0.1 8.125-8.1-2.125-2.1z" fill="#ecf0f1"></path> </g> </g></svg>
+                </span>
+                  <span v-else>
+                    <svg v-if="dtc.DiemTongKet>0" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 297 297" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <g> <g> <circle style="fill:#C0392B;" cx="148.5" cy="148.5" r="148.5"></circle> </g> </g> </g> <path style="fill:#C0392B;" d="M223.53,86.581L85.344,222.292l74.293,74.293c73.135-5.423,131.525-63.813,136.948-136.948 L223.53,86.581z"></path> <polygon style="fill:#ffffff;" points="231.823,94.875 202.125,65.177 148.5,118.802 94.875,65.177 65.177,94.875 118.802,148.5 65.177,202.125 94.875,231.823 148.5,178.198 202.125,231.823 231.823,202.125 178.198,148.5 "></polygon> </g> </g></svg>
+                </span>
+                </td>
+
+              </tr>
+              </template>
+              <template v-if="dt.DiemTBHocLuc>0">
             <tr>
-              <td id="cell" colspan="19" style="text-align: left"><span>Điểm trung bình học kỳ hệ 10: {{dt.DiemTBHocLuc}}</span></td>
+              <td id="cell" colspan="19" style="text-align: left"><span>Điểm trung bình học kỳ hệ 10: {{parseFloat(dt.DiemTBHocLuc).toFixed(2)}}</span></td>
             </tr>
               <tr>
-                <td id="cell" colspan="19" style="text-align: left"><span>Điểm trung bình học kỳ hệ 4: {{dt.DiemTBTinChi}}</span></td>
+                <td id="cell" colspan="19" style="text-align: left"><span>Điểm trung bình học kỳ hệ 4: {{parseFloat(dt.DiemTBTinChi).toFixed(2)}}</span></td>
               </tr>
               <tr>
-                <td id="cell" colspan="19" style="text-align: left"><span>Điểm trung bình tích luỹ: {{dt.DiemTBHocLucTichLuy}}</span></td>
+                <td id="cell" colspan="19" style="text-align: left"><span>Điểm trung bình tích luỹ: {{parseFloat(dt.DiemTBHocLucTichLuy).toFixed(2)}}</span></td>
               </tr>
               <tr>
-                <td id="cell" colspan="19" style="text-align: left"><span>Điểm trung bình tích luỹ (hệ 4): {{dt.DiemTBTinChiTichLuy}}</span></td>
+                <td id="cell" colspan="19" style="text-align: left"><span>Điểm trung bình tích luỹ (hệ 4): {{parseFloat(dt.DiemTBTinChiTichLuy).toFixed(2)}}</span></td>
               </tr>
               <tr>
                 <td id="cell" colspan="19" style="text-align: left"><span>Tổng số tín chỉ đã đăng ký: {{dt.TongSoTCDangKy}}</span></td>
@@ -95,9 +161,9 @@
               <tr>
                 <td id="cell" colspan="19" style="text-align: left"><span>Xếp loại học lực học kỳ: {{dt.XepLoaiHocKy}}</span></td>
               </tr>
-            </template>
               </template>
-<!--            </template>-->
+              </template>
+            </template>
 
           </template>
           </tbody>
@@ -119,21 +185,36 @@ export default {
       TenPhong:undefined,
       new_data:[],
       params:{
-        MaSinhVien:'120364'
+        MaSinhVien:""
       },
       IDDot:undefined,
-      datahk:[]
+      datahk:[],
+      Hoten:undefined,
+      count:0
     }
   },
   created() {
     localStorage.setItem('link',this.$route.fullPath);
-    this.getKetQuaHocTap()
   },
+
   methods:{
+    countnumber(){
+      let dem=this.count;
+      this.count = dem+1;
+      dem=this.count
+      return dem;
+    },
+    getPreviousItemsCount(dtIndex) {
+      let count = 0;
+      for (let i = 0; i < dtIndex; i++) {
+        count += this.data[i].items.length;
+      }
+      return count;
+    },
     groupData(data){
       const groupedData={};// create new object
       // Iterate through the data
-      var count=0;
+
       for (const item of data){
          const key=`${item.GioiTinh}-${item.HoDem}-${item.Ten}-${item.IDDot}-`+
          `${item.IDSinhVien}-${item.DiemTBHocLuc}-${item.MaSinhVien}-${item.NgaySinh2}-${item.TenDot}`
@@ -147,7 +228,6 @@ export default {
             IDSinhVien: item.IDSinhVien,
             DiemTBHocLuc: item.DiemTBHocLuc,
             DiemTBHocLucTichLuy: item.DiemTBHocLucTichLuy,
-            DiemTBThuongKy: item.DiemTBThuongKy,
             DiemTBTinChi: item.DiemTBTinChi,
             DiemTBTinChiTichLuy: item.DiemTBTinChiTichLuy,
             HocKy: item.HocKy,
@@ -172,6 +252,7 @@ export default {
               DiemChuyenCan1:item.DiemChuyenCan1,
               DiemThi:item.DiemThi,
               DiemThi1:item.DiemThi1,
+              DiemTBThuongKy: item.DiemTBThuongKy,
               DiemTieuLuan1:item.DiemTieuLuan1,
               DiemTinChi:item.DiemTinChi,
               DiemTongKet:item.DiemTongKet,
@@ -185,11 +266,14 @@ export default {
               MaHocPhan:item.MaHocPhan,
               MaLopChu:item.MaLopChu,
               MaLopHoc:item.MaLopHoc,
+              STT:this.countnumber(),
+              DiemThi2:item.DiemThi2,
               MaLopHocPhan:item.MaLopHocPhan,
               MaMonHoc:item.MaMonHoc,
-              STT:count+1,
               SoTinChi:item.SoTinChi,
               TenMonHoc:item.TenMonHoc,
+              DiemThuongKy1:item.DiemThuongKy1,
+              DiemThuongKy2:item.DiemThuongKy2,
               VangThi:item.VangThi
             })
       }
@@ -202,11 +286,32 @@ export default {
           rs=>{
             try{
               this.data=[]
-              this.data =this.groupData(rs.data.records)
+              this.data =rs.data.records
+              const sortedMaHocPhan = this.data.sort((a,b)=>{
+                const termA= a.MaHocPhan
+                const termB = b.MaHocPhan
+                if(termA <termB) return -1;
+                if(termA>termB) return 1;
+                return 0;
+              });
+              this.data=sortedMaHocPhan
+              this.Hoten = this.data[0].HoDem + " " + this.data[0].Ten
+              console.log(this.data)
+              this.data =this.groupData(this.data)
               for (let i=0;i<this.data.length;i++){
                   this.new_data[i] = this.data[i].TenDot
               }
-              console.log(this.new_data)
+              console.log(this.data)
+              const sortedDatare = this.data.sort((a,b)=>{
+                const[termA,yearA] = a.TenDot.split(" ")
+                const[termB,yearB] = b.TenDot.split(" ")
+                if(yearA<yearB) return -1;
+                if(yearA>yearB) return 1;
+                if(termA <termB) return -1;
+                if(termA>termB) return 1;
+                return 0;
+              });
+              this.data=sortedDatare;
               const sortedData = this.new_data.sort((a,b)=>{
                   const[termA,yearA] = a.split(" ")
                   const[termB,yearB] = b.split(" ")
@@ -227,6 +332,27 @@ export default {
           }
       )
     },
+    handleSearch(e){
+      e.preventDefault();
+      this.data=[]
+      this.datahk=[]
+      this.new_data=[]
+      this.Hoten=undefined
+      if(this.params.MaSinhVien !=="") {
+        this.getKetQuaHocTap();
+      }
+      console.log(this.params);
+    },
+    resetButton(){
+      this.params = {
+        MaSinhVien:"",
+      }
+      this.data=[]
+      this.datahk=[]
+      this.new_data=[]
+      this.Hoten=undefined
+    },
+
   }
 }
 </script>
