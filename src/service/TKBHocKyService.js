@@ -2,7 +2,9 @@ import http from "../config"
 const URL_TKB = "TKB_HocKy";
 const URL_DotHK = "TKB_Dot";
 const URL_DSSV = "TKB_DS_Sinhvien";
-const URL_LichThi = "TKB_LichThi"
+const URL_LichThi = "TKB_LichThi";
+const URL_LichDay = "TKB_GiangDay";
+const URL_Nganh = "Nganh";
 class TKBHocKyService{
     getTKBHocKy(params){
         return http.get(URL_TKB,{
@@ -19,6 +21,14 @@ class TKBHocKyService{
     }
     getdssv(MaLopHocPhan,MaLopHoc,TenDot){
         return http.get(URL_DSSV+"/"+MaLopHocPhan+"/"+MaLopHoc+"/"+TenDot)
+    }
+    getTKBGiangDay(params){
+        return http.get(URL_LichDay,{
+            params:params
+        })
+    }
+    getNgang(){
+        return http.get(URL_Nganh)
     }
 }
 export default new TKBHocKyService()
