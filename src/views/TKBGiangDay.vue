@@ -1,23 +1,38 @@
 <template>
   <div>
     <a-card>
+      <a-row type="flex" align="middle">
+        <img style="width: 100%" src="/images/banner.png" alt="Banner"/>
+      </a-row>
       <div>
-        <a-row type="flex" align="middle">
-          <img style="width: 100%" src="/images/banner.png" alt="Banner"/>
-        </a-row>
         <a-form @submit="handleSearch" class="product__search-form">
           <a-row>
-            <a-col :span="14" style="padding-right: 20px">
+            <a-col :span="8" style="padding-right: 20px">
               <a-form-item >
-                <a-input-search v-model="params.search"  placeholder="Mã môn/ Tên môn/ Mã Lớp">
+                <a-input-search v-model="params.search"  placeholder="Mã giảng viên/ Tên giảng viên">
                   <a-icon type="search"/>
                 </a-input-search>
               </a-form-item>
             </a-col>
-            <a-col :span="10">
+            <a-col :span="6" style="padding-right: 20px">
               <a-form-item>
                 <a-select v-model="params.hocky"  :placeholder="datahk[0].TenDot">
                   <a-select-option v-for="(item, index) in datahk" :value="item.TenDot" :key="index">{{ item.TenDot }}</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :span="6" style="padding-right: 20px">
+              <a-form-item>
+                <a-select v-model="params.nganh"  :placeholder="'Chọn ngành'">
+                  <a-select-option v-for="(item, index) in datanganh" :value="item.TenNganh" :key="index">{{ item.TenNganh }}</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :span="4" >
+              <a-form-item>
+                <a-select v-model="params.hocbu" :placeholder="'Lịch học'">
+                  <a-select-option value="0">Học chính</a-select-option>
+                  <a-select-option value="1">Học bù</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -37,7 +52,11 @@
         </div>
       </div>
       <div style="margin-top: 50px" class="col-md-12 container" >
-        <div class="table-wrap">
+        <div style="border-bottom: 1px solid #b3b7bb; padding-bottom: 10px;">
+          <h5 v-if="TenGiangVien" style="vertical-align: baseline; color: #667580; line-height: 18px; font-family: Tahoma !important; margin: 0;">Lịch giảng dạy của giảng viên {{TenGiangVien}} </h5>
+          <h5 v-else style="vertical-align: baseline; color: #667580; line-height: 18px; font-family: Tahoma !important; margin: 0;">Lịch giảng dạy</h5>
+        </div>
+        <div class="table-wrap" style="margin-top: 20px">
           <table class="table table-bordered" style="--bs-table-bg: dodgerblue; border-right: black">
             <thead>
             <tr>
@@ -49,10 +68,8 @@
               <th style="color: white">Tiết BD</th>
               <th style="color: white">ST</th>
               <th style="color: white">Phòng</th>
-              <th style="color: white">Giảng viên</th>
-              <th style="color: white">Số điện thoại</th>
-              <th style="color: white">Email</th>
-              <th style="color: white">Ngày Thi</th>
+              <th style="color: white">Lịch học</th>
+              <th style="color: white">Tuần</th>
             </tr>
             </thead>
             <tbody>
@@ -71,64 +88,42 @@
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
                     <span style="color: blue">{{ dt.SoTinChi }}</span>
                   </td>
-                  <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.Thu }}</span>
-                  </td>
-                  <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.TuTiet }}</span>
-                  </td>
-                  <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.DenTiet - dt.TuTiet + 1 }}</span>
-                  </td>
-                  <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-              <span style="color: blue" v-if="dt.MaPhong">
-                <span style="color: blue">{{ dt.MaPhong }}</span>
-              </span>
-                    <span v-else></span>
+                  <td>
+                    <span style="color: blue">{{ dtc.Thu }}</span>
                   </td>
                   <td>
-                <span style="color: blue" v-if="dtc.HoDem && dtc.Ten">
-                <span>
-                  {{dtc.HoDem+ " " +dtc.Ten}}
+                    <span style="color: blue">{{ dtc.TuTiet }}</span>
+                  </td>
+                  <td>
+                    <span style="color: blue">{{ dtc.DenTiet - dtc.TuTiet + 1 }}</span>
+                  </td>
+                  <td>
+              <span style="color: blue" v-if="dtc.MaPhong">
+                <span
+                    v-for="(phong, index) in Array.from(new Set(dtc.MaPhong.split(', ')))"
+                >
+                  {{ index > 0 ? ', ' : '' }}{{ phong.trim() }}
                 </span>
               </span>
                     <span v-else></span>
                   </td>
                   <td>
-                <span style="color: blue" v-if="dtc.SoDienThoai">
-                <span>
-                  {{dtc.SoDienThoai}}
-                </span>
-              </span>
-                    <span v-else></span>
+                    <span style="color: red" v-if="dtc.IsHocBu">
+                      Học bù
+                    </span>
+                    <span style="color: blue" v-else-if="!dtc.IsHocBu">
+                      Học chính
+                    </span>
                   </td>
                   <td>
-                <span style="color: blue" v-if="dtc.Email">
-                <span>
-                  {{dtc.Email}}
-                </span>
+              <span style="color: blue" v-for="(week) in getMaxWeeks(dtc.RankWeekList)">
+                <!-- Kiểm tra nếu giá trị tồn tại và lớn hơn 10 -->
+                <span v-if="week == 10">-</span>
+                <!-- Nếu không, hiển thị dấu "-" -->
+                <span v-else>{{ week }}</span>
               </span>
-                    <span v-else></span>
                   </td>
-                  <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.NgayThi.split("T")[0].split("-")[2]+"-"+dt.NgayThi.split("T")[0].split("-")[1]+"-"+dt.NgayThi.split("T")[0].split("-")[0] }}</span>
-                  </td>
-                  <!--                <td>-->
-                  <!--                  <span style="color: blue" v-if="dtc.HoDem != null && dtc.Ten !=null">{{ dtc.HoDem + ' ' + dtc.Ten }}</span>-->
-                  <!--                </td>-->
-                  <!--                <td>-->
-                  <!--              <span style="color: blue" v-for="(week) in getMaxWeeks(dtc.RankWeekList)">-->
-                  <!--                &lt;!&ndash; Kiểm tra nếu giá trị tồn tại và lớn hơn 10 &ndash;&gt;-->
-                  <!--                <span v-if="week == 10">-</span>-->
-                  <!--                &lt;!&ndash; Nếu không, hiển thị dấu "-" &ndash;&gt;-->
-                  <!--                <span v-else>{{ week }}</span>-->
-                  <!--              </span>-->
-                  <!--                </td>-->
 
-                  <!--                <td v-if="dtcIndex==0" :rowspan="dt.items.length"><router-link class="button" :to="'/DSSV/' +dt.MaLopHocPhan+'/'+dt.MaLopHoc+'/'+params.hocky">-->
-
-                  <!--                  <a-icon style="font-size: 25px;color: #007bff" type="unordered-list"/>-->
-                  <!--                </router-link></td>-->
 
                 </tr>
 
@@ -151,7 +146,6 @@
       </div>
     </a-card>
 
-
   </div>
 </template>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.9/vue.js"></script>
@@ -169,17 +163,21 @@ export default {
         page:1,
         limit:10,
         search:"",
+        nganh:undefined,
+        hocbu:undefined,
         hocky:undefined,
         orderby:"MaMonHoc"
       },
       IDDot:undefined,
-      datahk:[]
+      datahk:[],
+      datanganh:[],
+      TenGiangVien:undefined
     }
   },
   created() {
     localStorage.setItem('link',this.$route.fullPath);
-    this.getTKBLichThi()
-
+    this.getNganh()
+    this.getTKBDotHK()
   },
   methods:{
 
@@ -188,7 +186,7 @@ export default {
 
       // Iterate through the data
       for (const item of data) {
-        const key = `${item.MaMonHoc}-${item.MaLopHocPhan}-${item.TenMonHoc}-${item.MaLopHoc}-${item.MaPhong}-${item.SoTinChi}-${item.SoTinChi}-${item.Thu}-${item.TuTiet}-${item.DenTiet}-${item.NgayThi}`;
+        const key = `${item.MaMonHoc}-${item.MaLopHocPhan}-${item.TenMonHoc}-${item.MaLopHoc}-${item.SoTinChi}-${item.IsHocBu}`;
         // If the key doesn't exist in groupedData, create it with an empty object
         if (!groupedData[key]) {
           groupedData[key] = {
@@ -196,12 +194,12 @@ export default {
             MaLopHocPhan:item.MaLopHocPhan,
             TenMonHoc: item.TenMonHoc,
             MaLopHoc: item.MaLopHoc,
-            MaPhong:item.MaPhong,
             SoTinChi:item.SoTinChi,
-            Thu:item.Thu,
-            TuTiet:item.TuTiet,
-            DenTiet:item.DenTiet,
-            NgayThi:item.NgayThi,
+            TenGiangVien:item.TenGiangVien,
+            MaGiangVien:item.MaGiangVien,
+            Email:item.Email,
+            SoDienThoai:item.SoDienThoai,
+            IsHocBu:item.IsHocBu,
             items: [],
             // Add other properties here as needed
           };
@@ -209,10 +207,12 @@ export default {
 
         // Push the item to the corresponding key in groupedData
         groupedData[key].items.push({
-          HoDem:item.HoDem,
-          Ten:item.Ten,
-          SoDienThoai:item.SoDienThoai,
-          Email:item.Email
+          Thu: item.Thu,
+          MaMonHoc: item.MaMonHoc,
+          TuTiet: item.TuTiet,
+          DenTiet: item.DenTiet,
+          MaPhong:item.MaPhong,
+          RankWeekList:item.RankWeekList
           // Add other properties here as needed
         });
       }
@@ -220,33 +220,71 @@ export default {
       const result = Object.values(groupedData);
       return result;
     },
+    getMaxWeeks(rankWeekList) {
+      // Chuyển chuỗi thành mảng
+      if(rankWeekList) {
+        const weeks = Array.from(new Set(rankWeekList.split(', ')))
+            .map(Number) // Chuyển chuỗi thành mảng số
+            .sort((a, b) => a - b);
+        // Lấy giá trị tối đa
+        const maxWeek = weeks[weeks.length - 1];
+
+        // Tạo mảng chứa các giá trị từ 1 đến giá trị tối đa
+        const maxWeeks = [];
+        for (let i = 1; i <= maxWeek; i++) {
+          for (let j = 0; j < weeks.length; j++) {
+            if (weeks[j] == i) {
+              maxWeeks.push(weeks[j] % 10);
+              break;
+            }
+            if (j == weeks.length - 1 && weeks[weeks.length - 1] != i) {
+              maxWeeks.push(10);
+              break;
+            }
+          }
+
+        }
+        return maxWeeks;
+      }
+
+    },
     onShowSizeChange(current, pageSize) {
       this.params.limit = pageSize;
       this.params.page = current;
-      this.getTKBLichThi();
+      this.getTKGiangDay();
     },
     onChange(page, pageSize) {
       this.params.page = page;
       this.params.limit = pageSize;
-      this.getTKBLichThi();
+      this.getTKGiangDay();
     },
     handleSearch(e){
       e.preventDefault();
       this.params.page = 1;
       console.log(this.params);
-      this.getTKBLichThi();
+      this.data=[]
+      this.datanganh=[]
+      this.datahk=[]
+      this.TenGiangVien=undefined
+      this.getTKBDotHK()
+      this.getNganh()
+      if(this.params.search !=="") {
+        this.getTKGiangDay();
+      }
     },
-    async getTKBLichThi(){
+    async getTKGiangDay(){
       await this.getTKBDotHK()
       if (this.params.hocky ==undefined){
-        this.params.hocky = this.datahk[2].TenDot
+        this.params.hocky = this.datahk[0].TenDot
         console.log(this.params.hocky)
       }
-      await TKBHocKyService.getTKBLichThi(this.params).then(
+      await TKBHocKyService.getTKBGiangDay(this.params).then(
           rs=>{
             try{
               this.data=[]
               this.data =  this.groupDataByTenMonHocAndMaLop(rs.data.records)
+              this.TenGiangVien=this.data[0].TenGiangVien
+              //this.data=rs.data.records
               this.totalRecords = rs.data.filtered;
               console.log(this.data)
             }catch (e){
@@ -261,12 +299,32 @@ export default {
         page:1,
         limit:10,
         search:"",
+        nganh:undefined,
+        hocbu:undefined,
         hocky:undefined,
         orderby:"MaMonHoc"
       }
-      this.getTKBLichThi();
+      this.data=[]
+      this.datanganh=[]
+      this.datahk=[]
+      this.TenGiangVien=undefined
+      this.totalRecords=undefined
+      this.getTKBDotHK()
+      this.getNganh()
     },
-
+    async getNganh(){
+      await TKBHocKyService.getNganh().then(
+          rs=>{
+            try{
+              this.datanganh=rs.data.result.recordset;
+              console.log(this.datanganh)
+            }catch (e){
+              console.log(e);
+              console.log("co loi o nganh")
+            }
+          }
+      )
+    },
     async getTKBDotHK(){
       await  TKBHocKyService.getDotHocKy().then(
           rs=>{

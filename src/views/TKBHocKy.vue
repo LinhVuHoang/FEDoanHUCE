@@ -36,8 +36,7 @@
           </a-radio-group>
         </div>
       </div>
-    </a-card>
-    <div style="margin-top: 50px" class="col-md-12 container" >
+      <div style="margin-top: 50px" class="col-md-12 container" >
         <div class="table-wrap">
           <table class="table table-bordered" style="--bs-table-bg: dodgerblue; border-right: black">
             <thead>
@@ -58,29 +57,29 @@
             <tbody>
             <template v-for="(dt, index) in data">
               <template v-for="(dtc, dtcIndex) in dt.items">
-              <tr>
-                <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                  <span style="color: blue">{{ dt.MaMonHoc }}</span>
-                </td>
-                <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                  <span style="color: blue">{{ dt.TenMonHoc }}</span>
-                </td>
-                <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                  <span style="color: blue">{{ dt.MaLopHoc }}</span>
-                </td>
-                <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                  <span style="color: blue">{{ dt.SoTinChi }}</span>
-                </td>
-                <td>
-                  <span style="color: blue">{{ dtc.Thu }}</span>
-                </td>
-                <td>
-                  <span style="color: blue">{{ dtc.TuTiet }}</span>
-                </td>
-                <td>
-                  <span style="color: blue">{{ dtc.DenTiet - dtc.TuTiet + 1 }}</span>
-                </td>
-                <td>
+                <tr>
+                  <td v-if="dtcIndex==0" :rowspan="dt.items.length">
+                    <span style="color: blue">{{ dt.MaMonHoc }}</span>
+                  </td>
+                  <td v-if="dtcIndex==0" :rowspan="dt.items.length">
+                    <span style="color: blue">{{ dt.TenMonHoc }}</span>
+                  </td>
+                  <td v-if="dtcIndex==0" :rowspan="dt.items.length">
+                    <span style="color: blue">{{ dt.MaLopHoc }}</span>
+                  </td>
+                  <td v-if="dtcIndex==0" :rowspan="dt.items.length">
+                    <span style="color: blue">{{ dt.SoTinChi }}</span>
+                  </td>
+                  <td>
+                    <span style="color: blue">{{ dtc.Thu }}</span>
+                  </td>
+                  <td>
+                    <span style="color: blue">{{ dtc.TuTiet }}</span>
+                  </td>
+                  <td>
+                    <span style="color: blue">{{ dtc.DenTiet - dtc.TuTiet + 1 }}</span>
+                  </td>
+                  <td>
               <span style="color: blue" v-if="dtc.MaPhong">
                 <span
                     v-for="(phong, index) in Array.from(new Set(dtc.MaPhong.split(', ')))"
@@ -88,26 +87,26 @@
                   {{ index > 0 ? ', ' : '' }}{{ phong.trim() }}
                 </span>
               </span>
-                  <span v-else></span>
-                </td>
-                <td>
-                  <span style="color: blue" v-if="dtc.HoDem != null && dtc.Ten !=null">{{ dtc.HoDem + ' ' + dtc.Ten }}</span>
-                </td>
-                <td>
+                    <span v-else></span>
+                  </td>
+                  <td>
+                    <span style="color: blue" v-if="dtc.HoDem != null && dtc.Ten !=null">{{ dtc.HoDem + ' ' + dtc.Ten }}</span>
+                  </td>
+                  <td>
               <span style="color: blue" v-for="(week) in getMaxWeeks(dtc.RankWeekList)">
                 <!-- Kiểm tra nếu giá trị tồn tại và lớn hơn 10 -->
                 <span v-if="week == 10">-</span>
                 <!-- Nếu không, hiển thị dấu "-" -->
                 <span v-else>{{ week }}</span>
               </span>
-                </td>
+                  </td>
 
-                <td v-if="dtcIndex==0" :rowspan="dt.items.length"><router-link class="button" :to="'/DSSV/' +dt.MaLopHocPhan+'/'+dt.MaLopHoc+'/'+params.hocky">
+                  <td v-if="dtcIndex==0" :rowspan="dt.items.length"><router-link class="button" :to="'/DSSV/' +dt.MaLopHocPhan+'/'+dt.MaLopHoc+'/'+params.hocky">
 
-                  <a-icon style="font-size: 25px;color: #007bff" type="unordered-list"/>
-                </router-link></td>
+                    <a-icon style="font-size: 25px;color: #007bff" type="unordered-list"/>
+                  </router-link></td>
 
-              </tr>
+                </tr>
 
               </template>
             </template>
@@ -116,6 +115,7 @@
 
           <div style="padding-top: 15px">
             <a-pagination
+                :current="this.params.page"
                 :default-current="this.params.limit"
                 :total="this.totalRecords"
                 show-size-changer
@@ -125,6 +125,8 @@
           </div>
         </div>
       </div>
+    </a-card>
+
 
   </div>
 </template>
@@ -215,8 +217,8 @@ export default {
               break;
             }
           }
-
         }
+        console.log(maxWeeks)
         return maxWeeks;
       }
 

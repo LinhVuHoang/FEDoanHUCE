@@ -60,6 +60,7 @@
     </a-table>
     <div style="padding-top: 15px;padding-left: 15px">
       <a-pagination
+          :current="this.params.page"
           :default-current="this.params.limit"
           :total="this.totalRecords"
           show-size-changer

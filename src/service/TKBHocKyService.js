@@ -27,7 +27,7 @@ class TKBHocKyService{
             params:params
         })
     }
-    getNgang(){
+    getNganh(){
         return http.get(URL_Nganh)
     }
 }

@@ -36,6 +36,12 @@ let routes = [
 		component:()=>import('../views/TKBHocKy')
 	},
 	{
+		path:'/TKBGiangDay',
+		name:'TKBGiangDay',
+		layout: "dashboard",
+		component:()=>import('../views/TKBGiangDay')
+	},
+	{
 		path:'/TKBLichThi',
 		name:'TKBLichThi',
 		layout: "dashboard",
