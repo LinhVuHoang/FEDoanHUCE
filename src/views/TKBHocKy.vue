@@ -185,11 +185,15 @@ export default {
   },
   methods:{
     getSDTorEmail(index,data){
-      const new_data = Array.from(new Set(data.split(', ')))
-      if(new_data[index] !==null || new_data[index] !=='') {
-        return new_data[index];
-      }else {
+      if(data ===null){
         return "";
+      }else {
+        const new_data = Array.from(new Set(data.split(', ')))
+        if (new_data[index] !== null || new_data[index] !== '') {
+          return new_data[index];
+        } else {
+          return "";
+        }
       }
     },
      groupDataByTenMonHocAndMaLop(data) {
