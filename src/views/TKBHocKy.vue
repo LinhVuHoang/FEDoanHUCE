@@ -55,7 +55,7 @@
             </tr>
             </thead>
             <tbody>
-            <template v-for="(dt, index) in data">
+            <template v-for="(dt) in data">
               <template v-for="(dtc, dtcIndex) in dt.items">
                 <tr>
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
@@ -80,16 +80,15 @@
                     <span style="color: blue">{{ dtc.DenTiet - dtc.TuTiet + 1 }}</span>
                   </td>
                   <td>
-              <span style="color: blue" v-if="dtc.MaPhong">
-                <span
-                    v-for="(phong, index) in Array.from(new Set(dtc.MaPhong.split(', ')))"
-                >
-                  {{ index > 0 ? ', ' : '' }}{{ phong.trim() }}
-                </span>
+                <span style="color: blue" v-if="dtc.MaPhong">
+                  <span v-for="(phong, index) in Array.from(new Set(dtc.MaPhong.split(', ')))">
+                  {{ index > 0 ? ', ' : '' }}{{ phong.trim() }}</span>
               </span>
                     <span v-else></span>
                   </td>
                   <td>
+                    <template v-if="dtc.TenGiangVien">
+                    <template v-for="(tgv, index1) in Array.from(new Set(dtc.TenGiangVien.split(', ')))">
                     <a-popover>
                       <template slot="title">
                         <p style="padding-top: 15px">
@@ -97,16 +96,29 @@
                           <strong>Thông tin giảng viên</strong></p>
                       </template>
                       <template slot="content">
-                        <p><strong>Tên giảng viên:</strong> {{ dtc.HoDem && dtc.Ten ? dtc.HoDem + ' ' + dtc.Ten : '-' }}</p>
-                        <p><strong>Số điện thoại:</strong> {{ dtc.SoDienThoai || '-' }}</p>
-                        <p><strong>Email:</strong> {{ dtc.Email || '-' }}</p>
+                        <p><strong>Tên giảng viên:</strong>
+                          <span v-if="tgv">
+                            {{ tgv.trim() }}
+                          </span>
+                          <span v-else></span></p>
+                        <p><strong>Số điện thoại:</strong>
+                            {{getSDTorEmail(index1,dtc.SoDienThoai)}}
+                        </p>
+                        <p><strong>Email:</strong>
+                          {{getSDTorEmail(index1,dtc.Email)}}
+                        </p>
                       </template>
-                   <span style="color: blue" v-if="dtc.HoDem != null && dtc.Ten !=null">{{ dtc.HoDem + ' ' + dtc.Ten }}</span>
+                   <span style="color: blue" v-if="tgv">
+                      {{ index1 > 0 ? ', ' : '' }}{{ tgv.trim() }}
+                </span>
 
                     </a-popover>
+                    </template>
+                    </template>
+                    <template v-else></template>
                   </td>
                   <td>
-              <span style="color: blue" v-for="(week) in getMaxWeeks(dtc.RankWeekList)">
+                <span style="color: blue" v-for="(week) in getMaxWeeks(dtc.RankWeekList)">
                 <!-- Kiểm tra nếu giá trị tồn tại và lớn hơn 10 -->
                 <span v-if="week == 10">-</span>
                 <!-- Nếu không, hiển thị dấu "-" -->
@@ -122,6 +134,7 @@
                 </tr>
 
               </template>
+
             </template>
             </tbody>
           </table>
@@ -171,7 +184,14 @@ export default {
 
   },
   methods:{
-
+    getSDTorEmail(index,data){
+      const new_data = Array.from(new Set(data.split(', ')))
+      if(new_data[index] !==null || new_data[index] !=='') {
+        return new_data[index];
+      }else {
+        return "";
+      }
+    },
      groupDataByTenMonHocAndMaLop(data) {
       const groupedData = {};
 
@@ -197,8 +217,7 @@ export default {
           MaMonHoc: item.MaMonHoc,
           TuTiet: item.TuTiet,
           DenTiet: item.DenTiet,
-          HoDem:item.HoDem,
-          Ten:item.Ten,
+          TenGiangVien:item.TenGiangVien,
           SoDienThoai:item.SoDienThoai,
           Email:item.Email,
           MaPhong:item.MaPhong,
@@ -233,7 +252,6 @@ export default {
             }
           }
         }
-        console.log(maxWeeks)
         return maxWeeks;
       }
 
@@ -243,6 +261,7 @@ export default {
       this.params.page = current;
       this.getTKBHocKy();
     },
+
     onChange(page, pageSize) {
       this.params.page = page;
       this.params.limit = pageSize;

@@ -250,7 +250,7 @@ export default {
     async getTKBLichThi(){
       await this.getTKBDotHK()
       if (this.params.hocky ==undefined){
-        this.params.hocky = this.datahk[2].TenDot
+        this.params.hocky = this.datahk[0].TenDot
         console.log(this.params.hocky)
       }
       await TKBHocKyService.getTKBLichThi(this.params).then(
