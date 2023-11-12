@@ -288,11 +288,16 @@ export default {
             try{
               this.data=[]
               this.data =  this.groupDataByTenMonHocAndMaLop(rs.data.records)
-              this.totalRecords = rs.data.filtered;
+              if(rs.data.filtered>0) {
+                this.totalRecords = rs.data.filtered;
+              }else {
+                this.totalRecords=0
+              }
               console.log(this.data)
             }catch (e){
               console.log(e)
               console.log("Có lỗi")
+              this.totalRecords=0
             }
           }
       )

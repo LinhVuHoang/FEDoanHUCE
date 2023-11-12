@@ -14,11 +14,20 @@
                 </a-input-search>
               </a-form-item>
             </a-col>
-            <a-col :span="10">
+            <a-col :span="7" style="padding-right: 20px">
               <a-form-item>
                 <a-select v-model="params.hocky"  :placeholder="datahk[0].TenDot">
                   <a-select-option v-for="(item, index) in datahk" :value="item.TenDot" :key="index">{{ item.TenDot }}</a-select-option>
                 </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :span="3" style="float: right">
+              <a-form-item >
+                <a-date-picker
+                    format="DD-MM-YYYY"
+                    v-model="this.params.ngaythi"
+                    @change="getDate"
+                />
               </a-form-item>
             </a-col>
           </a-row>
@@ -168,6 +177,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.9/vue.js"></script>
 <script>
 import TKBHocKyService from "@/service/TKBHocKyService";
+import moment from 'moment-timezone';
+
 export default {
   data(){
     return{
@@ -181,19 +192,34 @@ export default {
         limit:10,
         search:"",
         hocky:undefined,
-        orderby:"MaMonHoc"
+        orderby:"MaMonHoc",
+        ngaythi:undefined,
       },
       IDDot:undefined,
-      datahk:[]
+      datahk:[],
+      TenDayDuDot:undefined
     }
   },
   created() {
     localStorage.setItem('link',this.$route.fullPath);
     this.getTKBLichThi()
-
   },
   methods:{
-
+    // disabledDate(current) {
+    //   const startDate = moment('2024-01-01', 'YYYY-MM-DD');
+    //   const endDate = moment('2024-06-30', 'YYYY-MM-DD');
+    //
+    //   // Ẩn các ngày trước ngày bắt đầu hoặc sau ngày kết thúc
+    //   return current && (current < startDate || current > endDate);
+    // },
+    // getDateDayDu(){
+    //   for(let i=0;i<this.datahk.length;i++){
+    //     if(this.datahk[i].TenDot==this.params.hocky){
+    //       this.TenDayDuDot=this.datahk[i].TenDayDu
+    //     }
+    //   }
+    //   console.log(this.TenDayDuDot)
+    // },
     groupDataByTenMonHocAndMaLop(data) {
       const groupedData = {};
 
@@ -231,6 +257,13 @@ export default {
       const result = Object.values(groupedData);
       return result;
     },
+    getDate(date) {
+      var event = moment(date._d).format('YYYY-MM-DDTHH:mm:ss.sssZ');
+      var timez = moment.utc(event).tz("Asia/Ho_Chi_Minh").format('YYYY-MM-DD');
+      this.params.ngaythi = timez;
+      this.params.hocky=undefined
+      console.log(this.params.ngaythi);
+    },
     onShowSizeChange(current, pageSize) {
       this.params.limit = pageSize;
       this.params.page = current;
@@ -249,7 +282,10 @@ export default {
     },
     async getTKBLichThi(){
       await this.getTKBDotHK()
-      if (this.params.hocky ==undefined){
+      if (this.params.hocky !=undefined){
+        this.params.ngaythi=undefined
+      }
+      if(this.params.hocky==undefined && this.params.ngaythi==undefined) {
         this.params.hocky = this.datahk[0].TenDot
         console.log(this.params.hocky)
       }
@@ -258,11 +294,16 @@ export default {
             try{
               this.data=[]
               this.data =  this.groupDataByTenMonHocAndMaLop(rs.data.records)
-              this.totalRecords = rs.data.filtered;
+              if(rs.data.filtered >0) {
+                this.totalRecords = rs.data.filtered;
+              }else {
+                this.totalRecords=0
+              }
               console.log(this.data)
             }catch (e){
               console.log(e)
               console.log("Có lỗi")
+              this.totalRecords=0
             }
           }
       )
@@ -273,7 +314,8 @@ export default {
         limit:10,
         search:"",
         hocky:undefined,
-        orderby:"MaMonHoc"
+        orderby:"MaMonHoc",
+        ngaythi:undefined
       }
       this.getTKBLichThi();
     },
