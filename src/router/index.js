@@ -78,6 +78,12 @@ let routes = [
 		component: () => import('../views/KetQuaHocTap'),
 	},
 	{
+		path: '/LichSuPH',
+		name: 'LichSuPH',
+		layout: "dashboard",
+		component: () => import('../views/PHLichSu'),
+	},
+	{
 		path: '/tables',
 		name: 'Tables',
 		layout: "dashboard",
