@@ -52,11 +52,43 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(row, index) in 15" :key="index">
-              <td id="cell">{{ index + 1 }}</td>
-              <td v-if="index>=0 && index<=2">
-                hello
-              </td>
+            <tr v-for="(row, rowIndex) in 15" :key="rowIndex">
+              <td id="cell1" style="max-width: 50px!important;">{{ rowIndex + 1 }}</td>
+              <template v-for="(column,index) in data">
+<!--                cố định các ô chưa có dữ liệu trước-->
+                <td v-bind:key="index" v-if="!column.isRowUsed.has(rowIndex)" id="cell"></td>
+                <template v-for="(item,indexitem) in column.items">
+                  <template v-if="rowIndex === item.TuTiet">
+                  <!-- Check if the current row index is within the range of TuTiet and DenTiet -->
+                  <td v-if="item.IsType==0" style="background-color: yellow" v-bind:key="indexitem" :rowspan="item.DenTiet - item.TuTiet+1" id="cell2">
+                    <span>Tiết: {{item.TuTiet+1}} - {{item.DenTiet+1}}</span><br>
+                    <span>Khoá: {{item.TenKhoaHoc}}</span><br>
+                    <span>Mã Môn: {{item.MaMonHoc}}</span><br>
+                    <span>Tên Môn: {{item.TenMonHoc}}</span><br>
+                    <span>Tên Lớp: {{item.TenLopHoc}}</span><br>
+                    <span>Tên Lớp: {{column.NgayBatDau}}</span><br>
+                  </td>
+                    <td v-else-if="item.IsType==1" style="background-color: green" v-bind:key="indexitem" :rowspan="item.DenTiet - item.TuTiet+1" id="cell2">
+                      <span>Tiết: {{item.TuTiet+1}} - {{item.DenTiet+1}}</span><br>
+                      <span>Khoá: {{item.TenKhoaHoc}}</span><br>
+                      <span>Mã Môn: {{item.MaMonHoc}}</span><br>
+                      <span>Tên Môn: {{item.TenMonHoc}}</span><br>
+                      <span>Tên Lớp: {{item.TenLopHoc}}</span><br>
+                      <span>Tên Lớp: {{column.NgayBatDau}}</span><br>
+                    </td>
+
+                    <td v-else-if="item.IsType==2" style="background-color: cornflowerblue" v-bind:key="indexitem" :rowspan="item.DenTiet - item.TuTiet+1" id="cell2">
+                      <span>Tiết: {{item.TuTiet+1}} - {{item.DenTiet+1}}</span><br>
+                      <span>Khoá: {{item.TenKhoaHoc}}</span><br>
+                      <span>Mã Môn: {{item.MaMonHoc}}</span><br>
+                      <span>Tên Môn: {{item.TenMonHoc}}</span><br>
+                      <span>Tên Lớp: {{item.TenLopHoc}}</span><br>
+                      <span>Tên Lớp: {{column.NgayBatDau}}</span><br>
+                    </td>
+                  </template>
+                </template>
+
+                </template>
             </tr>
             </tbody>
           </table>
@@ -78,9 +110,11 @@ export default {
       new_data:[],
       params:{
         MaPhong:"209.H1",
-        NgayBatDau:"2022-11-13",
+        NgayBatDau:"2022-11-22",
         NgayKetThuc:"2022-11-25"
       },
+      StartDay:undefined,
+      EndDay:undefined,
       IDDot:undefined,
       datahk:[],
       Hoten:undefined,
@@ -103,14 +137,58 @@ export default {
         dateArray.push(currentDate.toISOString().split('T')[0])
         currentDate.setDate(currentDate.getDate() + 1);
       }
+      console.log(dateArray)
       return dateArray
+    },
+    groupData(data){
+      const groupedData={};// create new object
+      // Iterate through the data
+
+      for (const item of data){
+        const key=`${item.MaPhong}-${item.TenPhong}-${item.NgayBatDau}-${item.NgayKetThuc}-${item.NgayBatDauHoc}-${item.NgayKetThucHoc}`
+        // If the key doesn't exist in groupedData, create it with an empty object
+        if(!groupedData[key]) {
+          groupedData[key] = {
+            MaPhong:item.MaPhong,
+            TenPhong:item.TenPhong,
+            NgayBatDau:item.NgayBatDau.split('T')[0],
+            NgayKetThuc: item.NgayKetThuc.split('T')[0],
+            NgayBatDauHoc:item.NgayBatDauHoc.split('T')[0],
+            NgayKetThucHoc:item.NgayKetThucHoc.split('T')[0],
+            isRowUsed:new Set(),
+            items: []
+          }
+        }
+        for (let i=item.TuTiet-1;i<item.DenTiet;i++){
+          groupedData[key].isRowUsed.add(i)
+        }
+        groupedData[key].items.push({
+          DenTiet:item.DenTiet-1,
+          IDKhoaHoc:item.IDKhoaHoc,
+          IsType:item.IsType,
+          MaHocPhan:item.MaHocPhan,
+          MaLopHoc:item.MaLopHoc,
+          MaLopHocPhan:item.MaLopHocPhan,
+          MaMonHoc:item.MaMonHoc,
+          TenKhoaHoc:item.TenKhoaHoc,
+          TenLopHoc:item.TenLopHoc,
+          TenMonHoc:item.TenMonHoc,
+          Thu:item.Thu,
+          TuTiet:item.TuTiet-1
+        })
+      }
+      // Convert the grouped data object to an array
+      const result = Object.values(groupedData);
+      return result
     },
     async getPhongHocLS(){
       await PhongHocService.getLichSuPH(this.params).then(
           rs=>{
             try {
               this.data = []
-              this.data = rs.data.records
+              this.data = this.groupData(rs.data.records)
+              this.StartDay=this.params.NgayBatDau;
+              this.EndDay=this.params.NgayKetThuc;
               this.datelist=this.generateDateList(this.params.NgayBatDau,this.params.NgayKetThuc)
               console.log(this.data)
             }catch (e) {
@@ -177,7 +255,14 @@ $color-highlight: #ff3f40;
 body{
   font-family: Tahoma !important;
 }
+td {
+  border-right: 1px solid #ddd;
+}
 #header1{
+  color:#1da1f6;vertical-align:middle;white-space: nowrap;
+}
+#header11{
+  width: 50px!important;
   color:#1da1f6;vertical-align:middle;white-space: nowrap;
 }
 #header2{
@@ -189,5 +274,19 @@ body{
 #cell{
   padding: 10px;
   border:1px solid #bdd6e9;
+}
+#cell2{
+  width: 100px!important;
+  height: 100px!important;
+  text-align: center;
+  vertical-align: center;
+  padding: 10px;
+  border:1px solid #bdd6e9;
+}
+#cell1{
+  width: 50px!important;
+  padding: 10px;
+  border:1px solid #bdd6e9;
+
 }
 </style>
