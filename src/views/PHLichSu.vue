@@ -47,20 +47,20 @@
           <table class="table table-bordered" style="--bs-table-bg: #f3f7f9; text-align: center;line-height:1.42857143;">
             <thead >
             <tr>
-              <th id="header1">Tiết</th>
+              <th style="width: 50px!important; max-width: 50px!important;" id="header11">Tiết</th>
               <th id="header1" v-for="(day,index) in datelist" v-bind:key="index">{{day.split('-')[2]}}/{{day.split('-')[1]}}</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(row, rowIndex) in 15" :key="rowIndex">
-              <td id="cell1" style="max-width: 50px!important;">{{ rowIndex + 1 }}</td>
+              <td id="cell1">{{ rowIndex + 1 }}</td>
               <template v-for="(column,index) in data">
 <!--                cố định các ô chưa có dữ liệu trước-->
-                <td v-bind:key="index" v-if="!column.isRowUsed.has(rowIndex)" id="cell"></td>
-                <template v-for="(item,indexitem) in column.items">
+                <td v-bind:key="index" v-if="!column.isRowUsed.has(rowIndex)" id="cell2"></td>
+                <template v-for="(item) in column.items">
                   <template v-if="rowIndex === item.TuTiet">
                   <!-- Check if the current row index is within the range of TuTiet and DenTiet -->
-                  <td v-if="item.IsType==0" style="background-color: yellow" v-bind:key="indexitem" :rowspan="item.DenTiet - item.TuTiet+1" id="cell2">
+                  <td v-if="item.IsType==0" style="background-color: yellow" :rowspan="item.DenTiet - item.TuTiet+1" id="cell2">
                     <span>Tiết: {{item.TuTiet+1}} - {{item.DenTiet+1}}</span><br>
                     <span>Khoá: {{item.TenKhoaHoc}}</span><br>
                     <span>Mã Môn: {{item.MaMonHoc}}</span><br>
@@ -68,7 +68,7 @@
                     <span>Tên Lớp: {{item.TenLopHoc}}</span><br>
                     <span>Tên Lớp: {{column.NgayBatDau}}</span><br>
                   </td>
-                    <td v-else-if="item.IsType==1" style="background-color: green" v-bind:key="indexitem" :rowspan="item.DenTiet - item.TuTiet+1" id="cell2">
+                    <td v-else-if="item.IsType==1" style="background-color: green" :rowspan="item.DenTiet - item.TuTiet+1" id="cell2">
                       <span>Tiết: {{item.TuTiet+1}} - {{item.DenTiet+1}}</span><br>
                       <span>Khoá: {{item.TenKhoaHoc}}</span><br>
                       <span>Mã Môn: {{item.MaMonHoc}}</span><br>
@@ -76,8 +76,7 @@
                       <span>Tên Lớp: {{item.TenLopHoc}}</span><br>
                       <span>Tên Lớp: {{column.NgayBatDau}}</span><br>
                     </td>
-
-                    <td v-else-if="item.IsType==2" style="background-color: cornflowerblue" v-bind:key="indexitem" :rowspan="item.DenTiet - item.TuTiet+1" id="cell2">
+                    <td v-else-if="item.IsType==2" style="background-color: cornflowerblue" :rowspan="item.DenTiet - item.TuTiet+1" id="cell2">
                       <span>Tiết: {{item.TuTiet+1}} - {{item.DenTiet+1}}</span><br>
                       <span>Khoá: {{item.TenKhoaHoc}}</span><br>
                       <span>Mã Môn: {{item.MaMonHoc}}</span><br>
@@ -100,6 +99,7 @@
 
 <script>
 import PhongHocService from "@/service/PhongHocService";
+import moment from 'moment'
 export default {
   data(){
     return{
@@ -110,8 +110,8 @@ export default {
       new_data:[],
       params:{
         MaPhong:"209.H1",
-        NgayBatDau:"2022-11-22",
-        NgayKetThuc:"2022-11-25"
+        NgayBatDau:"2022-11-1",
+        NgayKetThuc:"2022-11-5"
       },
       StartDay:undefined,
       EndDay:undefined,
@@ -129,13 +129,14 @@ export default {
   methods:{
     // tạo ra một list date từ ngày bắt đầu đến ngày kết thúc
     generateDateList(startDate,endDate){
-      const start = new Date(startDate)
-      const end = new Date(endDate)
+      const start = moment(startDate)
+      const end = moment(endDate)
       const dateArray=[]
       let currentDate=start
+      console.log(currentDate)
       while(currentDate<=end){
-        dateArray.push(currentDate.toISOString().split('T')[0])
-        currentDate.setDate(currentDate.getDate() + 1);
+        dateArray.push(currentDate.format('YYYY-MM-DD'))
+        currentDate.add(1,'days')
       }
       console.log(dateArray)
       return dateArray
@@ -262,7 +263,6 @@ td {
   color:#1da1f6;vertical-align:middle;white-space: nowrap;
 }
 #header11{
-  width: 50px!important;
   color:#1da1f6;vertical-align:middle;white-space: nowrap;
 }
 #header2{
@@ -276,17 +276,32 @@ td {
   border:1px solid #bdd6e9;
 }
 #cell2{
-  width: 100px!important;
-  height: 100px!important;
+  //width: 50px!important;
+  //height: 50px!important;
+  //max-width: 500px !important;
+  //max-height: 250px !important;
+  padding:5px;
   text-align: center;
   vertical-align: center;
-  padding: 10px;
   border:1px solid #bdd6e9;
+  white-space: nowrap;
 }
 #cell1{
-  width: 50px!important;
+  //width: 50px!important;
+  //max-width: 50px!important;
   padding: 10px;
   border:1px solid #bdd6e9;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
 }
+.limited-width {
+  width: 50px!important;
+  max-width: 100px!important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 </style>
