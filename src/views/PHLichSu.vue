@@ -56,7 +56,7 @@
               <td id="cell1">{{ rowIndex + 1 }}</td>
               <template v-for="(column,index) in data">
 <!--                cố định các ô chưa có dữ liệu trước-->
-                <td v-bind:key="index" v-if="!column.isRowUsed.has(rowIndex)" id="cell2"></td>
+                <td v-bind:key="index" v-if="!column.isRowUsed.has(rowIndex)" id="cell"></td>
                 <template v-for="(item) in column.items">
                   <template v-if="rowIndex === item.TuTiet">
                   <!-- Check if the current row index is within the range of TuTiet and DenTiet -->
@@ -66,7 +66,7 @@
                     <span>Mã Môn: {{item.MaMonHoc}}</span><br>
                     <span>Tên Môn: {{item.TenMonHoc}}</span><br>
                     <span>Tên Lớp: {{item.TenLopHoc}}</span><br>
-                    <span>Tên Lớp: {{column.NgayBatDau}}</span><br>
+                    <span> {{column.NgayBatDau}}</span><br>
                   </td>
                     <td v-else-if="item.IsType==1" style="background-color: green" :rowspan="item.DenTiet - item.TuTiet+1" id="cell2">
                       <span>Tiết: {{item.TuTiet+1}} - {{item.DenTiet+1}}</span><br>
@@ -74,15 +74,14 @@
                       <span>Mã Môn: {{item.MaMonHoc}}</span><br>
                       <span>Tên Môn: {{item.TenMonHoc}}</span><br>
                       <span>Tên Lớp: {{item.TenLopHoc}}</span><br>
-                      <span>Tên Lớp: {{column.NgayBatDau}}</span><br>
+                      <span>{{column.NgayBatDau}}</span><br>
                     </td>
                     <td v-else-if="item.IsType==2" style="background-color: cornflowerblue" :rowspan="item.DenTiet - item.TuTiet+1" id="cell2">
                       <span>Tiết: {{item.TuTiet+1}} - {{item.DenTiet+1}}</span><br>
                       <span>Khoá: {{item.TenKhoaHoc}}</span><br>
-                      <span>Mã Môn: {{item.MaMonHoc}}</span><br>
-                      <span>Tên Môn: {{item.TenMonHoc}}</span><br>
-                      <span>Tên Lớp: {{item.TenLopHoc}}</span><br>
-                      <span>Tên Lớp: {{column.NgayBatDau}}</span><br>
+                      <span>Mô tả: {{item.TenMonHoc}}</span><br>
+                      <span>Chi Tiết: {{item.TenLopHoc}}</span><br>
+                      <span> {{column.NgayBatDau}}</span><br>
                     </td>
                   </template>
                 </template>
@@ -110,8 +109,8 @@ export default {
       new_data:[],
       params:{
         MaPhong:"209.H1",
-        NgayBatDau:"2022-11-1",
-        NgayKetThuc:"2022-11-5"
+        NgayBatDau:"2022-11-01",
+        NgayKetThuc:"2022-11-14"
       },
       StartDay:undefined,
       EndDay:undefined,
@@ -140,6 +139,31 @@ export default {
       }
       console.log(dateArray)
       return dateArray
+    },
+    readlData(data,datelist){
+      const resultArray=[]
+      for (const item of datelist){
+        const dayObject = {}
+        const key=`${item}`
+        dayObject[key]={
+          NgayBatDau:item,
+          NgayKetThuc:item,
+          NgayBatDauHoc:item,
+          NgayKetThuchoc:item,
+          isRowUsed:new Set()
+        }
+        for (const [index,item1] of data.entries()){
+          if(item1.NgayBatDau == item){
+              resultArray.push(item1)
+            break;
+          }else if (index === data.length-1 && item1.NgayBatDau !=item){
+              resultArray.push(Object.values(dayObject)[0])
+            break;
+          }
+        }
+      }
+      console.log(resultArray)
+      return resultArray;
     },
     groupData(data){
       const groupedData={};// create new object
@@ -191,6 +215,7 @@ export default {
               this.StartDay=this.params.NgayBatDau;
               this.EndDay=this.params.NgayKetThuc;
               this.datelist=this.generateDateList(this.params.NgayBatDau,this.params.NgayKetThuc)
+              this.data= this.readlData(this.data,this.datelist)
               console.log(this.data)
             }catch (e) {
               console.log(e)
@@ -261,6 +286,7 @@ td {
 }
 #header1{
   color:#1da1f6;vertical-align:middle;white-space: nowrap;
+  min-width: 180px !important;
 }
 #header11{
   color:#1da1f6;vertical-align:middle;white-space: nowrap;
@@ -276,7 +302,7 @@ td {
   border:1px solid #bdd6e9;
 }
 #cell2{
-  //width: 50px!important;
+  //width: 100px!important;
   //height: 50px!important;
   //max-width: 500px !important;
   //max-height: 250px !important;
@@ -285,6 +311,8 @@ td {
   vertical-align: center;
   border:1px solid #bdd6e9;
   white-space: nowrap;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 40, 1) 0%, rgba(255, 255, 40, 1) 100%), linear-gradient(to bottom, rgba(240, 40, 40, 1) 0%, rgba(240, 40, 40, 1) 100%);
+  background-clip: content-box, padding-box;
 }
 #cell1{
   //width: 50px!important;
