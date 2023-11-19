@@ -19,7 +19,7 @@
                 <a-date-picker
                     format="DD-MM-YYYY"
                     v-model="this.params.NgayBatDau"
-                    @change="getDate"
+                    @change="getDate1"
                 />
               </a-form-item>
             </a-col>
@@ -28,7 +28,7 @@
                 <a-date-picker
                     format="DD-MM-YYYY"
                     v-model="this.params.NgayKetThuc"
-                    @change="getDate"
+                    @change="getDate2"
                 />
               </a-form-item>
             </a-col>
@@ -42,9 +42,21 @@
         </a-button>
       </div>
       <div style="margin-top: 50px" class="col-md-12 container" >
+        <a-row>
+          <a-col :xs="24" :sm="24" :md="4" :lg="4" class="bar" id="cell6" style="width: 50px; height: 30px;"></a-col>
+          <a-col id="chuthich" :xs="24" :sm="24" :md="4" :lg="4" class="bar" style="width: 5%; height: 50px;">Lịch học</a-col>
+          <a-col :xs="24" :sm="24" :md="4" :lg="4" class="bar" id="cell5" style="width: 50px; height: 30px;"></a-col>
+          <a-col id="chuthich" :xs="24" :sm="24" :md="4" :lg="4" class="bar" style="width: 5%; height: 50px;">Lịch thi</a-col>
+          <a-col :xs="24" :sm="24" :md="4" :lg="4" class="bar" id="cell7" style="width: 50px; height: 30px;"></a-col>
+          <a-col id="chuthich" :xs="24" :sm="24" :md="4" :lg="4" class="bar" style="width: 15%; height: 50px;">Lịch xin phòng tự do</a-col>
+        </a-row>
+        <div style="border-bottom: 1px solid #b3b7bb; padding-bottom: 10px;margin-top: 20px">
+          <h5 v-if="tenphong" style="vertical-align: baseline; color: #667580; line-height: 18px; font-family: Tahoma !important; margin: 0;">Lịch phòng học {{tenphong}} </h5>
+          <h5 v-else style="vertical-align: baseline; color: #667580; line-height: 18px; font-family: Tahoma !important; margin: 0;">Lịch phòng học </h5>
+        </div>
         <div class="table-wrap" style="margin-top: 20px">
 
-          <table class="table table-bordered" style="--bs-table-bg: #f3f7f9; text-align: center;line-height:1.42857143;">
+          <table v-if="this.data.length>0" class="table table-bordered" style="--bs-table-bg: #f3f7f9; text-align: center;line-height:1.42857143;">
             <thead >
             <tr>
               <th style="width: 50px!important; max-width: 50px!important;" id="header11">Tiết</th>
@@ -66,22 +78,22 @@
                     <span>Mã Môn: {{item.MaMonHoc}}</span><br>
                     <span>Tên Môn: {{item.TenMonHoc}}</span><br>
                     <span>Tên Lớp: {{item.TenLopHoc}}</span><br>
-                    <span> {{column.NgayBatDau}}</span><br>
+
                   </td>
-                    <td v-else-if="item.IsType==1" style="background-color: green" :rowspan="item.DenTiet - item.TuTiet+1" id="cell2">
+                    <td v-else-if="item.IsType==1" style="background-color: green" :rowspan="item.DenTiet - item.TuTiet+1" id="cell3">
                       <span>Tiết: {{item.TuTiet+1}} - {{item.DenTiet+1}}</span><br>
                       <span>Khoá: {{item.TenKhoaHoc}}</span><br>
                       <span>Mã Môn: {{item.MaMonHoc}}</span><br>
                       <span>Tên Môn: {{item.TenMonHoc}}</span><br>
                       <span>Tên Lớp: {{item.TenLopHoc}}</span><br>
-                      <span>{{column.NgayBatDau}}</span><br>
+
                     </td>
-                    <td v-else-if="item.IsType==2" style="background-color: cornflowerblue" :rowspan="item.DenTiet - item.TuTiet+1" id="cell2">
+                    <td v-else-if="item.IsType==2" style="background-color: cornflowerblue" :rowspan="item.DenTiet - item.TuTiet+1" id="cell4">
                       <span>Tiết: {{item.TuTiet+1}} - {{item.DenTiet+1}}</span><br>
                       <span>Khoá: {{item.TenKhoaHoc}}</span><br>
                       <span>Mô tả: {{item.TenMonHoc}}</span><br>
                       <span>Chi Tiết: {{item.TenLopHoc}}</span><br>
-                      <span> {{column.NgayBatDau}}</span><br>
+
                     </td>
                   </template>
                 </template>
@@ -98,7 +110,7 @@
 
 <script>
 import PhongHocService from "@/service/PhongHocService";
-import moment from 'moment'
+import moment from 'moment-timezone';
 export default {
   data(){
     return{
@@ -108,9 +120,9 @@ export default {
       TenPhong:undefined,
       new_data:[],
       params:{
-        MaPhong:"209.H1",
-        NgayBatDau:"2022-11-01",
-        NgayKetThuc:"2022-11-14"
+        MaPhong:"",
+        NgayBatDau:"",
+        NgayKetThuc:""
       },
       StartDay:undefined,
       EndDay:undefined,
@@ -118,7 +130,8 @@ export default {
       datahk:[],
       Hoten:undefined,
       count:0,
-      datelist:[]
+      datelist:[],
+      tenphong:undefined
     }
   },
   created() {
@@ -214,15 +227,44 @@ export default {
               this.data = this.groupData(rs.data.records)
               this.StartDay=this.params.NgayBatDau;
               this.EndDay=this.params.NgayKetThuc;
+              this.tenphong=this.data[0].MaPhong
               this.datelist=this.generateDateList(this.params.NgayBatDau,this.params.NgayKetThuc)
               this.data= this.readlData(this.data,this.datelist)
+              console.log(this.tenphong)
               console.log(this.data)
             }catch (e) {
               console.log(e)
               console.log("co loi")
+              this.data=[]
+              console.log(this.data)
             }
           }
       )
+    },
+    handleSearch(e){
+      e.preventDefault();
+      console.log(this.params);
+      this.getPhongHocLS();
+    },
+    resetButton(){
+      this.params = {
+          MaPhong:"",
+          NgayBatDau:"",
+          NgayKetThuc:""
+      }
+      this.getPhongHocLS();
+    },
+    getDate1(date) {
+      var event = moment(date._d).format('YYYY-MM-DDTHH:mm:ss.sssZ');
+      var timez = moment.utc(event).tz("Asia/Ho_Chi_Minh").format('YYYY-MM-DD');
+      this.params.NgayBatDau = timez;
+      console.log(this.params.ngaythi);
+    },
+    getDate2(date) {
+      var event = moment(date._d).format('YYYY-MM-DDTHH:mm:ss.sssZ');
+      var timez = moment.utc(event).tz("Asia/Ho_Chi_Minh").format('YYYY-MM-DD');
+      this.params.NgayKetThuc = timez;
+      console.log(this.params.ngaythi);
     },
   }
 }
@@ -284,6 +326,12 @@ body{
 td {
   border-right: 1px solid #ddd;
 }
+#chuthich{
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: left;
+  margin-left: 10px;
+}
 #header1{
   color:#1da1f6;vertical-align:middle;white-space: nowrap;
   min-width: 180px !important;
@@ -311,7 +359,70 @@ td {
   vertical-align: center;
   border:1px solid #bdd6e9;
   white-space: nowrap;
-  background-image: linear-gradient(to bottom, rgba(255, 255, 40, 1) 0%, rgba(255, 255, 40, 1) 100%), linear-gradient(to bottom, rgba(240, 40, 40, 1) 0%, rgba(240, 40, 40, 1) 100%);
+  background-image: linear-gradient(to bottom, #fcfdef 0%, #fcfdef 100%), linear-gradient(to bottom, #eff5a2 0%, #eff5a2 100%);
+  background-clip: content-box, padding-box;
+}
+#cell5{
+  //width: 100px!important;
+  //height: 50px!important;
+  //max-width: 500px !important;
+  //max-height: 250px !important;
+  padding:5px;
+  text-align: center;
+  vertical-align: center;
+  white-space: nowrap;
+  background-image: linear-gradient(to bottom, #fcfdef 0%, #fcfdef 100%), linear-gradient(to bottom, #eff5a2 0%, #eff5a2 100%);
+  background-clip: content-box, padding-box;
+}
+#cell3{
+  //width: 100px!important;
+  //height: 50px!important;
+  //max-width: 500px !important;
+  //max-height: 250px !important;
+  padding:5px;
+  text-align: center;
+  vertical-align: center;
+  border:1px solid #bdd6e9;
+  white-space: nowrap;
+  background-image: linear-gradient(to bottom, #eefefc 0%, #eefefc 100%), linear-gradient(to bottom, #71b19d 0%, #71b19d 100%);
+  background-clip: content-box, padding-box;
+}
+#cell6{
+  //width: 100px!important;
+  //height: 50px!important;
+  //max-width: 500px !important;
+  //max-height: 250px !important;
+  padding:5px;
+  text-align: center;
+  vertical-align: center;
+  white-space: nowrap;
+  background-image: linear-gradient(to bottom, #eefefc 0%, #eefefc 100%), linear-gradient(to bottom, #71b19d 0%, #71b19d 100%);
+  background-clip: content-box, padding-box;
+}
+#cell4{
+  //width: 100px!important;
+  //height: 50px!important;
+  //max-width: 500px !important;
+  //max-height: 250px !important;
+  padding:5px;
+  text-align: center;
+  vertical-align: center;
+  border:1px solid #bdd6e9;
+  white-space: nowrap;
+  background-image: linear-gradient(to bottom, #f0f9ff 0%, #f0f9ff 100%), linear-gradient(to bottom, #98caeb 0%, #98caeb 100%);
+  background-clip: content-box, padding-box;
+}
+#cell7{
+  //width: 100px!important;
+  //height: 50px!important;
+  //max-width: 500px !important;
+  //max-height: 250px !important;
+  padding:5px;
+  text-align: center;
+  vertical-align: center;
+  border:1px solid #bdd6e9;
+  white-space: nowrap;
+  background-image: linear-gradient(to bottom, #f0f9ff 0%, #f0f9ff 100%), linear-gradient(to bottom, #98caeb 0%, #98caeb 100%);
   background-clip: content-box, padding-box;
 }
 #cell1{
@@ -330,6 +441,18 @@ td {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.row {
+  display: flex;
+  overflow: auto; /* Tự động cuộn ngang nếu cần */
+}
+
+.bar {
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 5px;
+  flex: 0 0 auto; /* Không thay đổi kích thước của item */
+  white-space: nowrap; /* Ngăn chặn xuống dòng */
 }
 
 </style>
