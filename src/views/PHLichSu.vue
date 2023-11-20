@@ -252,6 +252,7 @@ export default {
           NgayBatDau:"",
           NgayKetThuc:""
       }
+      this.tenphong=undefined;
       this.getPhongHocLS();
     },
     getDate1(date) {
