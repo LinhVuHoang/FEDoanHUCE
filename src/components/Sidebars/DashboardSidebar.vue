@@ -89,6 +89,14 @@
             <span class="label">Lịch sử phòng học</span>
           </router-link>
         </a-menu-item>
+        <a-menu-item>
+          <router-link to="/QuanLyDHP">
+            <span class="icon">
+              <svg width="20px" height="20px" fill="#000000" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>alt-download-window</title> <path d="M0 26.016v-20q0-2.496 1.76-4.256t4.256-1.76h20q2.464 0 4.224 1.76t1.76 4.256v20q0 2.496-1.76 4.224t-4.224 1.76h-5.024l2.496-4h2.528q0.8 0 1.408-0.576t0.576-1.408v-18.016h-24v18.016q0 0.832 0.576 1.408t1.44 0.576h2.496l2.496 4h-4.992q-2.496 0-4.256-1.76t-1.76-4.224zM4 4q0 0.832 0.576 1.44t1.44 0.576 1.408-0.576 0.576-1.44-0.576-1.408-1.408-0.576-1.44 0.576-0.576 1.408zM10.016 24h4v-8h4v8h4l-6.016 8z"></path> </g></svg>
+            </span>
+            <span class="label">Quản lý điểm học phần</span>
+          </router-link>
+        </a-menu-item>
 <!--        <a-sub-menu >-->
 <!--          <span class="icon" slot="title" style="margin-left:-8px">-->
 <!--							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">-->

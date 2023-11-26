@@ -1,15 +1,14 @@
 <template>
-
+  <div>
   <!-- Authors Table Card -->
-  <a-card :bordered="false" class="header-solid h-full" :bodyStyle="{padding: 0,}">
-    <template #title>
+  <a-card>
       <a-row type="flex" align="middle">
         <img style="width: 100%" src="/images/banner.png" alt="Banner"/>
       </a-row>
       <div>
         <a-form @submit="handleSearch" class="product__search-form">
           <a-row>
-            <a-col :span="13" style="padding-right: 20px">
+            <a-col :span="14" style="padding-right: 20px">
               <a-form-item >
                 <a-input-search  v-model="params.search" placeholder="Mã Lớp/Mã môn/Tên môn">
                   <a-icon type="search"/>
@@ -32,7 +31,6 @@
           Reset
         </a-button>
       </div>
-    </template>
     <a-table :columns="columns" :data-source="data" :pagination="false">
       <template slot="TrangThaiDangKy" slot-scope="text">
         <div class="author-info"  v-if="text=='Đăng ký mới'">
@@ -70,7 +68,7 @@
     </div>
   </a-card>
   <!-- / Authors Table Card -->
-
+</div>
 </template>
 <script>
 import DangKyHocPhanService from "@/service/DangKyHocPhanService";

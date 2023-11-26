@@ -66,6 +66,12 @@ let routes = [
 		component: () => import('../views/SVDSDangKyHocPhan'),
 	},
 	{
+		path: '/QuanLyDHP',
+		name: 'QuanLyDHP',
+		layout: "dashboard",
+		component: () => import('../views/QuanLyDHP'),
+	},
+	{
 		path: '/DS_LHP_SiSo',
 		name: 'DS_LHP_SiSo',
 		layout: "dashboard",
