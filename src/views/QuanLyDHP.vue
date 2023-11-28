@@ -59,13 +59,14 @@
             <p class="m-0 font-regular" style="color: dodgerblue" >Chưa khóa</p>
           </div>
         </template>
-        <template slot="IsDaNopBanGiay" slot-scope="text">
-          <div class="author-info" v-if="text">
-            <p class="m-0 font-regular" style="color: green" >Đã khóa</p>
+        <template slot="IsDaNopBanGiay" slot-scope="text,record">
+          <div class="author-info" v-if="text==1">
+            <p class="m-0 font-regular" style="color: green" >Đã nộp</p>
           </div>
-          <div class="author-info" v-else>
-            <p class="m-0 font-regular" style="color: dodgerblue" >Chưa khóa</p>
+          <div class="author-info" v-else style="white-space: nowrap">
+            <input type="checkbox"  :id="'uncheckedbox_' + record.IDLopHocPhan"  @change="updateStatus(record.IDLopHocPhan,1)"/>
           </div>
+
         </template>
         <template slot="NgayThi" slot-scope="text">
           <div class="author-info"  >
@@ -172,10 +173,11 @@ export default ({
       params:{
         page:1,
         limit:10,
-        search:"608818",
+        search:"6088",
         hocky:"HK1 2022-2023",
         orderby:"MaMonHoc"
       },
+      isChecked: false,
       IDDot:undefined,
       datahk:[]
     }
@@ -207,6 +209,9 @@ export default ({
               console.log(rs)
               if(rs.data.records != undefined) {
                 this.data = rs.data.records
+                for (let i=0;i<this.data.length;i++){
+                  this.data[i]['checked']=false
+                }
               }else {
                 this.data=[]
               }
@@ -246,6 +251,46 @@ export default ({
       this.getQuanLyDHP();
       console.log(this.params);
 
+    },
+    updateStatus(idlophocphan,status){
+
+      if(status==1) {
+        console.log(idlophocphan)
+        this.$confirm({
+          title: 'Xác nhận đã nộp bản giấy',
+          onOk: () => {
+            QuanLyDiemHPService.Update(idlophocphan,'1').then(
+                rs => {
+                  for (let i=0;i<this.data.length;i++){
+                    if(this.data[i]['IDLopHocPhan'] == idlophocphan){
+                      this.data[i]['checked']=true
+                    }
+                  }
+                  console.log(rs.data)
+                  this.getQuanLyDHP()
+                }
+            )
+          },
+          onCancel: () => {
+
+            QuanLyDiemHPService.Update(idlophocphan,'0').then(
+                rs => {
+                  console.log(rs.data)
+                  document.getElementById("uncheckedbox_"+idlophocphan).checked = false;
+                  for (let i=0;i<this.data.length;i++){
+                    if(this.data[i]['IDLopHocPhan'] == idlophocphan){
+                      this.data[i]['checked']=false
+                      console.log(this.data[i]['checked'])
+                    }
+                  }
+                  this.isChecked=false
+
+                  this.getQuanLyDHP()
+                }
+            )
+          }
+        })
+      }
     },
     resetButton(){
       this.params = {

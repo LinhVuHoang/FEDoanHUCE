@@ -170,8 +170,12 @@ const router = new VueRouter({
 	}
 })
 router.beforeEach((to, from, next) => {
+
 	let token = localStorage.getItem('access_token');
-	if (to.name !== 'Sign-In' && to.name !== 'Sign-Up' && !token) {
+	if(localStorage.getItem('link')==null && to.name === 'Sign-In' && token) {
+		next({name: 'TKBHocKy'});
+	}
+	else if (to.name !== 'Sign-In' && to.name !== 'Sign-Up' && !token) {
 			next({name: 'Sign-In'});
 	}
 	else if(to.name ==='Sign-In' && token){
@@ -181,8 +185,7 @@ router.beforeEach((to, from, next) => {
 	else if(to.name ==='Sign-Up' && token){
 		localStorage.removeItem('access_token');
 		next({name:'Sign-Up'})
-	}
-	else {
+	}else{
 		next();
 	}
 })
