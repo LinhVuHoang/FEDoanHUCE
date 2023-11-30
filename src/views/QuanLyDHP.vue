@@ -30,6 +30,9 @@
         <a-button type="primary" html-type="submit" @click="resetButton"  style="margin-left: 20px">
           Reset
         </a-button>
+        <button type="button" class="download-btn" style="float: right" v-on:click="exportToExcel">
+          <a-icon type="file-excel" theme="filled"/>
+        </button>
       </div>
       <a-table :columns="columns" :data-source="data" :pagination="false">
 <!--        <template slot="TrangThaiDangKy" slot-scope="text">-->
@@ -103,6 +106,7 @@
 <script>
 import QuanLyDiemHPService from "@/service/QuanLyDiemHPService";
 import TKBHocKyService from "@/service/TKBHocKyService";
+import ExcelJS from "exceljs";
 const columns = [
   {
     title: 'Mã môn học',
@@ -211,6 +215,7 @@ export default ({
                 this.data = rs.data.records
                 for (let i=0;i<this.data.length;i++){
                   this.data[i]['checked']=false
+                  this.data[i]['STT'] = i+1;
                 }
               }else {
                 this.data=[]
@@ -301,6 +306,104 @@ export default ({
         orderby:"MaMonHoc"
       }
       this.getQuanLyDHP();
+    },
+    async exportToExcel() {
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet("Danh sách lớp học phần chưa nộp điểm");
+      const studentData=this.OrderProperties(this.customizeData(this.data))
+      console.log(studentData)
+      // Tạo các dòng dữ liệu
+      const data = [];
+
+      // Create a cell style for the title
+      const titleStyle = {
+        font: {
+          size: 16,
+          bold: true,
+        },
+        alignment: {
+          horizontal: 'center',
+        },
+      };
+
+      // Create a cell style for data
+      const dataCellStyle = {
+        font: {
+          size: 12,
+          bold: false, // Adjust as needed
+        },
+        alignment: {
+          horizontal: 'left',
+        },
+      };
+
+      // Merge cells for the title
+      worksheet.mergeCells('A1:H1');
+      worksheet.getCell('A1').value = "Danh sách lớp học phần chưa nộp điểm";
+      worksheet.getCell('A1').style = titleStyle;
+
+      // Set data values for the information cells
+
+      worksheet.getCell('B2').value = "Học kỳ: "+this.data[0].TenDot;;
+
+      // Apply data cell style to information cells
+      worksheet.getCell('B2').style = dataCellStyle;
+
+      // Apply the border style to hide gridlines in the range A1 to H4
+      const shadingStyle = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFFFFFFF' }, // Adjust the color as needed
+      };
+
+      // Apply the shading style to the range A1 to H4
+      for (let row = 2; row <= 5; row++) {
+        for (let col = 1; col <= 8; col++) {
+          worksheet.getCell(row, col).fill = shadingStyle;
+        }
+      }
+      // Add the title for the student data
+      worksheet.getCell('A6').value = "STT";
+      worksheet.getCell('B6').value = "Mã sinh viên";
+      worksheet.getCell('C6').value = "Họ Đệm";
+      worksheet.getCell('D6').value = "Tên";
+      worksheet.getCell('E6').value = "Email";
+      worksheet.getCell('F6').value = "Số điện thoại";
+      worksheet.getCell('G6').value = "Ngày Sinh";
+      worksheet.getCell('H6').value = "Lớp quản lý";
+      for (let i=0;i<studentData.length;i++){
+        const studentArray = Object.values(studentData[i])
+        data.push(studentArray)
+      }
+
+      // Add the data to the worksheet
+      data.forEach((row) => {
+        worksheet.addRow(row);
+      });
+      const blob = await workbook.xlsx.writeBuffer();
+
+      // Create a Blob URL and trigger a download
+      const blobURL = URL.createObjectURL(new Blob([blob], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+      const a = document.createElement("a");
+      a.href = blobURL;
+      a.download = "DanhSachSinhVien" +this.data[0].MaLopHoc+".xlsx";
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    },
+    customizeData(data){
+      return data.map((dssv)=>{
+        // eslint-disable-next-line no-unused-vars
+        const{IDLopHocDanhNghia,IDLopHocPhan,TenDot,IDDot,MaLopHocPhan,MaLopHoc,TenMonHoc,IDLopHocphan,IDSinhVien,SiSo,...rest} = dssv;
+        return rest
+      });
+    },
+    OrderProperties(data){
+      const newOrder = ["STT", "MaSinhVien", "HoDem", "Ten", "Email", "SoDienThoai", "NgaySinh2", "TenLop"];
+      const newData = data.map((item) => Object.assign({}, ...newOrder.map((key) => ({ [key]: item[key] }))))
+      console.log(newData)
+      return newData;
     },
   }
 })
