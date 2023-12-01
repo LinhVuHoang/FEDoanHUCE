@@ -30,7 +30,7 @@
         <a-button type="primary" html-type="submit" @click="resetButton"  style="margin-left: 20px">
           Reset
         </a-button>
-        <button type="button" class="download-btn" style="float: right" v-on:click="exportToExcel">
+        <button v-if="data.length>0" type="button" class="download-btn" style="float: right" v-on:click="exportToExcel">
           <a-icon type="file-excel" theme="filled"/>
         </button>
       </div>
@@ -169,6 +169,7 @@ export default ({
       // Active button for the "Authors" table's card header radio button group.
       authorsHeaderBtns: 'all',
       data:[],
+      data1:[],
       columns:columns,
       totalRecords: undefined,
       totalPages:undefined,
@@ -177,8 +178,15 @@ export default ({
       params:{
         page:1,
         limit:10,
-        search:"6088",
-        hocky:"HK1 2022-2023",
+        search:"608818",
+        hocky:"HK1 2023-2024",
+        orderby:"MaMonHoc"
+      },
+      params1:{
+        page:1,
+        limit:10000000,
+        search:undefined,
+        hocky:undefined,
         orderby:"MaMonHoc"
       },
       isChecked: false,
@@ -190,6 +198,7 @@ export default ({
     localStorage.setItem('link',this.$route.fullPath);
     this.getTKBDotHK()
     this.getQuanLyDHP()
+    this.GetQuanLyDHP1();
   },
   methods:{
     async getTKBDotHK(){
@@ -254,8 +263,50 @@ export default ({
         console.log(this.params.hocky)
       }
       this.getQuanLyDHP();
+      this.GetQuanLyDHP1();
       console.log(this.params);
 
+    },
+    async GetQuanLyDHP1(){
+      this.params1.search= this.params.search
+      this.params1.hocky=this.params.hocky
+      await QuanLyDiemHPService.getAll(this.params1).then(
+          rs=>{
+            try{
+              this.data1=[]
+              console.log(rs)
+              if(rs.data.records != undefined) {
+                this.data1 = rs.data.records.filter(item =>
+                    item.IsDaNopBanGiay === null ||
+                    item.IsDaNopBanGiay === false ||
+                    item.IsDaNopBanGiay === 0
+                );
+                for (let i=0;i<this.data1.length;i++){
+                  this.data1[i]['STT'] = i+1;
+                  const text= this.data1[i]['NgayThi']
+                  this.data1[i]['NgayThi']=text.split('T')[0].split('-')[2]+"-"+text.split('T')[0].split('-')[1]+"-"+text.split('T')[0].split('-')[0]
+                  const MGV = Array.from(new Set(this.data1[i]['MaGiangVien'].split(', ')))
+                  const TGV =Array.from(new Set(this.data1[i]['TenGiangVien'].split(', ')))
+                  console.log(MGV)
+                  console.log(TGV)
+                  this.data1[i]['GiangVien']=""
+                  for ( let j=0;j<MGV.length;j++){
+                    this.data1[i]['GiangVien']+=MGV[j]+"-"+TGV[j]
+                    if( j!=MGV.length-1){
+                      this.data1[i]['GiangVien'] += ", "
+                    }
+                  }
+                }
+              }else {
+                this.data1=[]
+              }
+              console.log(this.data1)
+            }catch (e){
+              console.log(e)
+              console.log("Có lỗi")
+            }
+          }
+      )
     },
     updateStatus(idlophocphan,status){
 
@@ -306,11 +357,12 @@ export default ({
         orderby:"MaMonHoc"
       }
       this.getQuanLyDHP();
+      this.GetQuanLyDHP1();
     },
     async exportToExcel() {
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet("Danh sách lớp học phần chưa nộp điểm");
-      const studentData=this.OrderProperties(this.customizeData(this.data))
+      const studentData=this.OrderProperties(this.customizeData(this.data1))
       console.log(studentData)
       // Tạo các dòng dữ liệu
       const data = [];
@@ -326,51 +378,104 @@ export default ({
         },
       };
 
-      // Create a cell style for data
-      const dataCellStyle = {
-        font: {
-          size: 12,
-          bold: false, // Adjust as needed
-        },
-        alignment: {
-          horizontal: 'left',
-        },
-      };
 
       // Merge cells for the title
-      worksheet.mergeCells('A1:H1');
+      worksheet.mergeCells('A1:K1');
       worksheet.getCell('A1').value = "Danh sách lớp học phần chưa nộp điểm";
       worksheet.getCell('A1').style = titleStyle;
-
+      worksheet.mergeCells('A2:K2');
+      worksheet.getCell('A2').value = this.data1[0].TenDot;
+      worksheet.getCell('A2').style = titleStyle;
       // Set data values for the information cells
-
-      worksheet.getCell('B2').value = "Học kỳ: "+this.data[0].TenDot;;
-
-      // Apply data cell style to information cells
-      worksheet.getCell('B2').style = dataCellStyle;
-
       // Apply the border style to hide gridlines in the range A1 to H4
-      const shadingStyle = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FFFFFFFF' }, // Adjust the color as needed
-      };
-
+      // const shadingStyle = {
+      //   type: 'pattern',
+      //   pattern: 'solid',
+      //   fgColor: { argb: 'FFFFFFFF' }, // Adjust the color as needed
+      // };
       // Apply the shading style to the range A1 to H4
-      for (let row = 2; row <= 5; row++) {
-        for (let col = 1; col <= 8; col++) {
-          worksheet.getCell(row, col).fill = shadingStyle;
-        }
-      }
       // Add the title for the student data
-      worksheet.getCell('A6').value = "STT";
-      worksheet.getCell('B6').value = "Mã sinh viên";
-      worksheet.getCell('C6').value = "Họ Đệm";
-      worksheet.getCell('D6').value = "Tên";
-      worksheet.getCell('E6').value = "Email";
-      worksheet.getCell('F6').value = "Số điện thoại";
-      worksheet.getCell('G6').value = "Ngày Sinh";
-      worksheet.getCell('H6').value = "Lớp quản lý";
+      worksheet.getCell('A4').value = "STT";
+      worksheet.getCell('A4').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
+      worksheet.getCell('B4').value = "Mã lớp học phần";
+      worksheet.getCell('B4').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
+      worksheet.getCell('C4').value = "Mã môn học";
+      worksheet.getCell('C4').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
+      worksheet.getCell('D4').value = "Tên môn học";
+      worksheet.getCell('D4').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
+      worksheet.getCell('E4').value = "Số tín chỉ";
+      worksheet.getCell('E4').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
+      worksheet.getCell('F4').value = "Lớp môn học";
+      worksheet.getCell('F4').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
+      worksheet.getCell('G4').value = "Sĩ số sinh viên";
+      worksheet.getCell('G4').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
+      worksheet.getCell('H4').value = "Ngày thi";
+      worksheet.getCell('H4').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
+      worksheet.getCell('I4').value = "Giảng viên";
+      worksheet.getCell('I4').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
+      worksheet.getCell('J4').value = "Tổ bộ môn";
+      worksheet.getCell('J4').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
+      worksheet.getCell('K4').value = "Khoa chủ quản";
+      worksheet.getCell('K4').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
+      worksheet.getCell('L4').border = {
+
+        left: { style: 'thin', color: { argb: '00000000' } },
+      };
       for (let i=0;i<studentData.length;i++){
         const studentArray = Object.values(studentData[i])
         data.push(studentArray)
@@ -378,7 +483,15 @@ export default ({
 
       // Add the data to the worksheet
       data.forEach((row) => {
-        worksheet.addRow(row);
+        const excelRow = worksheet.addRow(row);
+        row.forEach((column, index) => {
+          excelRow.getCell(index + 1).border = {
+            top: { style: 'thin', color: { argb: '00000000' } },
+            left: { style: 'thin', color: { argb: '00000000' } },
+            bottom: { style: 'thin', color: { argb: '00000000' } },
+            right: { style: 'thin', color: { argb: '00000000' } },
+          };
+        });
       });
       const blob = await workbook.xlsx.writeBuffer();
 
@@ -386,7 +499,7 @@ export default ({
       const blobURL = URL.createObjectURL(new Blob([blob], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
       const a = document.createElement("a");
       a.href = blobURL;
-      a.download = "DanhSachSinhVien" +this.data[0].MaLopHoc+".xlsx";
+      a.download = "DanhSachChuaNopDiem_" +this.data1[0].TenDot+"_"+this.params1.search+".xlsx";
       a.style.display = "none";
       document.body.appendChild(a);
       a.click();
@@ -395,12 +508,12 @@ export default ({
     customizeData(data){
       return data.map((dssv)=>{
         // eslint-disable-next-line no-unused-vars
-        const{IDLopHocDanhNghia,IDLopHocPhan,TenDot,IDDot,MaLopHocPhan,MaLopHoc,TenMonHoc,IDLopHocphan,IDSinhVien,SiSo,...rest} = dssv;
+        const{DaKhoaDiemKetThuc,DaKhoaDiemQuaTrinh,Email,IDDot,TenDot,TenHeDaoTao,IDLopHocPhan,IDLopXepLichThi,Id,IsDaNopBanGiay,MaGiangVien,TenGiangVien,IsKhoaTH,IsKhoaTL,IsXacNhan,NgayCapNhat,NgayNopBanGiay,NgayTao,NguoiCapNhat,NguoiTao,Nhom,SoDienThoai,TenNganh,TenNghe,...rest} = dssv;
         return rest
       });
     },
     OrderProperties(data){
-      const newOrder = ["STT", "MaSinhVien", "HoDem", "Ten", "Email", "SoDienThoai", "NgaySinh2", "TenLop"];
+      const newOrder = ["STT", "MaLopHocPhan", "MaMonHoc", "TenMonHoc", "SoTinChi", "MaLopHoc", "SiSo", "NgayThi","GiangVien","TenBoMon","TenPhongBan"];
       const newData = data.map((item) => Object.assign({}, ...newOrder.map((key) => ({ [key]: item[key] }))))
       console.log(newData)
       return newData;
