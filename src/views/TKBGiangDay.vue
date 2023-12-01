@@ -1,4 +1,4 @@
-<template>
+<template style="font-family: Tahoma">
   <div>
     <a-card>
       <a-row type="flex" align="middle">
@@ -56,20 +56,20 @@
           <h5  style="vertical-align: baseline; color: #667580; line-height: 18px; font-family: Tahoma !important; margin: 0;">Lịch giảng dạy</h5>
         </div>
         <div class="table-wrap" style="margin-top: 20px">
-          <table class="table table-bordered" style="--bs-table-bg: dodgerblue; border-right: black">
+          <table class="table table-bordered" style="--bs-table-bg: #2a8ecd; border-right: #5c5d62;font-family: Tahoma">
             <thead>
             <tr>
-              <th style="color: white">MaMH</th>
-              <th style="color: white">Tên MH</th>
-              <th style="color: white">Mã lớp</th>
-              <th style="color: white">STC</th>
-              <th style="color: white">Thứ</th>
-              <th style="color: white">Tiết BD</th>
-              <th style="color: white">ST</th>
-              <th style="color: white">Phòng</th>
-              <th style="color: white">Giảng viên</th>
-              <th style="color: white">Tuần</th>
-              <th style="color: white">Lịch học</th>
+              <th style="color: #f6fffa">MaMH</th>
+              <th style="color: #f6fffa">Tên MH</th>
+              <th style="color: #f6fffa">Mã lớp</th>
+              <th style="color: #f6fffa">STC</th>
+              <th style="color: #f6fffa">Thứ</th>
+              <th style="color: #f6fffa">Tiết BD</th>
+              <th style="color: #f6fffa">ST</th>
+              <th style="color: #f6fffa">Phòng</th>
+              <th style="color: #f6fffa">Giảng viên</th>
+              <th style="color: #f6fffa">Tuần</th>
+              <th style="color: #f6fffa">Lịch học</th>
 
             </tr>
             </thead>
@@ -78,28 +78,28 @@
               <template v-for="(dtc, dtcIndex) in dt.items">
                 <tr>
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.MaMonHoc }}</span>
+                    <span style="color: #002a5c">{{ dt.MaMonHoc }}</span>
                   </td>
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.TenMonHoc }}</span>
+                    <span style="color: #002a5c">{{ dt.TenMonHoc }}</span>
                   </td>
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.MaLopHoc }}</span>
+                    <span style="color: #002a5c">{{ dt.MaLopHoc }}</span>
                   </td>
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.SoTinChi }}</span>
+                    <span style="color: #002a5c">{{ dt.SoTinChi }}</span>
                   </td>
                   <td>
-                    <span style="color: blue">{{ dtc.Thu }}</span>
+                    <span style="color: #002a5c">{{ dtc.Thu }}</span>
                   </td>
                   <td>
-                    <span style="color: blue">{{ dtc.TuTiet }}</span>
+                    <span style="color: #002a5c">{{ dtc.TuTiet }}</span>
                   </td>
                   <td>
-                    <span style="color: blue">{{ dtc.DenTiet - dtc.TuTiet + 1 }}</span>
+                    <span style="color: #002a5c">{{ dtc.DenTiet - dtc.TuTiet + 1 }}</span>
                   </td>
                   <td>
-              <span style="color: blue" v-if="dtc.MaPhong">
+              <span style="color: #002a5c" v-if="dtc.MaPhong">
                 <span
                     v-for="(phong, index) in Array.from(new Set(dtc.MaPhong.split(', ')))"
                 >
@@ -120,11 +120,11 @@
                         <p><strong>Số điện thoại:</strong> {{ dtc.SoDienThoai || '-' }}</p>
                         <p><strong>Email:</strong> {{ dtc.Email || '-' }}</p>
                       </template>
-                    <span style="color: blue;white-space: nowrap;">{{ dtc.TenGiangVien }}</span>
+                    <span style="color: #002a5c;white-space: nowrap;">{{ dtc.TenGiangVien }}</span>
                     </a-popover>
                   </td>
                   <td>
-              <span style="color: blue" v-for="(week) in getMaxWeeks(dtc.RankWeekList)">
+              <span style="color: #002a5c" v-for="(week) in getMaxWeeks(dtc.RankWeekList)">
                 <!-- Kiểm tra nếu giá trị tồn tại và lớn hơn 10 -->
                 <span v-if="week == 10">-</span>
                 <!-- Nếu không, hiển thị dấu "-" -->
@@ -135,7 +135,7 @@
                     <span style="color: red" v-if="dtc.IsHocBu">
                       Học bù
                     </span>
-                    <span style="color: blue" v-else-if="!dtc.IsHocBu">
+                    <span style="color: #002a5c" v-else-if="!dtc.IsHocBu">
                       Học chính
                     </span>
                   </td>

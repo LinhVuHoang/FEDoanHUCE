@@ -1,4 +1,4 @@
-<template>
+<template style="font-family: Tahoma">
   <div>
   <!-- Authors Table Card -->
   <a-card>

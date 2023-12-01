@@ -3,7 +3,7 @@
 	"./layouts/Default.vue" .
  -->
 
-<template>
+<template style="font-family: Tahoma">
 	<div class="sign-in">
 
 		<a-row type="flex" :gutter="[24,24]" justify="space-around" align="middle">

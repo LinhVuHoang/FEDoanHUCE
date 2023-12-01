@@ -1,4 +1,4 @@
-<template>
+<template style="font-family: Tahoma">
   <div>
     <a-card>
       <a-row type="flex" align="middle">
@@ -59,7 +59,7 @@
           <table v-if="this.data.length>0" class="table table-bordered" style="--bs-table-bg: #f3f7f9; text-align: center;line-height:1.42857143;">
             <thead >
             <tr>
-              <th style="width: 50px!important; max-width: 50px!important;" id="header11">Tiết</th>
+              <th style="width: 50px!important; max-width: 50px!important;text-align: center" id="header11">Tiết</th>
               <th id="header1" v-for="(day,index) in datelist" v-bind:key="index">{{day.split('-')[2]}}/{{day.split('-')[1]}}</th>
             </tr>
             </thead>
@@ -338,7 +338,7 @@ td {
   min-width: 180px !important;
 }
 #header11{
-  color:#1da1f6;vertical-align:middle;white-space: nowrap;
+  color:#1da1f6;vertical-align:center;white-space: nowrap;
 }
 #header2{
   color:#1DA1F6;vertical-align:middle;white-space: nowrap;

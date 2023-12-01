@@ -3,7 +3,7 @@
 	"./layouts/Default.vue" .
  -->
 
-<template>
+<template style="font-family: Tahoma">
 	<div>
 
 		<!-- Sign Up Image And Headings -->

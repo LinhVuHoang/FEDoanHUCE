@@ -1,4 +1,4 @@
-<template>
+<template style="font-family: Tahoma">
   <a-card :bordered="false" class="header-solid h-full" :bodyStyle="{padding: 0,}">
   <div>
     <a-row type="flex" align="middle">
@@ -13,47 +13,47 @@
         <a-icon type="file-excel" theme="filled"/>
       </button>
       <div class="table-wrap">
-        <table class="table table-bordered" style="--bs-table-bg: dodgerblue; border-right: black">
+        <table class="table table-bordered" style="--bs-table-bg: #2a8ecd; border-right: #5c5d62">
           <thead>
           <tr>
-            <th style="color: white">STT</th>
-            <th style="color: white">Mã Sinh Viên</th>
-            <th style="color: white">Tên Sinh Viên</th>
-            <th style="color: white">Giới tính</th>
-            <th style="color: white">Email</th>
-            <th style="color: white">Số điện thoại</th>
-            <th style="color: white">Lớp Học</th>
-            <th style="color: white">Ngày Sinh</th>
+            <th style="color: #f6fffa">STT</th>
+            <th style="color: #f6fffa">Mã Sinh Viên</th>
+            <th style="color: #f6fffa">Tên Sinh Viên</th>
+            <th style="color: #f6fffa">Giới tính</th>
+            <th style="color: #f6fffa">Email</th>
+            <th style="color: #f6fffa">Số điện thoại</th>
+            <th style="color: #f6fffa">Lớp Học</th>
+            <th style="color: #f6fffa">Ngày Sinh</th>
           </tr>
           </thead>
           <tbody>
           <template >
             <tr v-for="(sv) in data">
               <td >
-                <span style="color: blue">{{sv.STT}}</span>
+                <span style="color: #002a5c">{{sv.STT}}</span>
               </td>
               <td >
-                <span style="color: blue">{{sv.MaSinhVien}}</span>
+                <span style="color: #002a5c">{{sv.MaSinhVien}}</span>
               </td>
               <td >
-                <span style="color: blue">{{sv.HoDem}} {{sv.Ten}}</span>
+                <span style="color: #002a5c">{{sv.HoDem}} {{sv.Ten}}</span>
               </td>
               <td >
-                <span style="color: blue">{{sv.GioiTinh}}</span>
+                <span style="color: #002a5c">{{sv.GioiTinh}}</span>
               </td>
               <td  v-if="sv.Email">
-                <span style="color: blue">{{sv.Email}}</span>
+                <span style="color: #002a5c">{{sv.Email}}</span>
               </td>
               <td v-else></td>
               <td  v-if="sv.SoDienThoai">
-                <span style="color: blue">{{sv.SoDienThoai}}</span>
+                <span style="color: #002a5c">{{sv.SoDienThoai}}</span>
               </td>
               <td v-else></td>
               <td >
-                <span style="color: blue">{{sv.TenLopHoc}}</span>
+                <span style="color: #002a5c">{{sv.TenLopHoc}}</span>
               </td>
               <td >
-                <span style="color: blue">{{sv.NgaySinh}}</span>
+                <span style="color: #002a5c">{{sv.NgaySinh}}</span>
               </td>
             </tr>
           </template>
@@ -119,25 +119,6 @@ export default {
           }
       )
     },
-    // downloadFile() {
-    //   const data = this.investorsList;
-    //   const fileName = "np-data";
-    //   const exportType = exportFromJSON.types.xls;
-    //
-    //   if (data) exportFromJSON({ data, fileName, exportType });
-    // },
-//     download(){
-//       const data = XLSX.utils.json_to_sheet(this.OrderProperties(this.customizeData(this.data)))
-//       const wb = XLSX.utils.book_new()
-//       // Tạo nội dung tùy chỉnh
-//       XLSX.utils.book_append_sheet(wb, data, 'DanhSachSinhVien')
-//       // Tạo một dòng tiêu đề
-//     //  const headerRow = ["Danh sách sinh vien", "Sĩ số"];
-//
-// // Thêm dòng tiêu đề vào worksheet
-//       //XLSX.utils.sheet_add_aoa(this.data[0].SiSo, [headerRow], { origin: 'A1' });
-//       XLSX.writeFile(wb,'Danh_sach_sinh_vien_'+this.data[0].MaLopHoc+'.xlsx')
-//     },
     async exportToExcel() {
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet("Danh sách sinh viên");
@@ -169,7 +150,7 @@ export default {
       };
 
       // Merge cells for the title
-      worksheet.mergeCells('A1:I1');
+      worksheet.mergeCells('A1:J1');
       worksheet.getCell('A1').value = "DANH SÁCH SINH VIÊN LỚP HỌC PHẦN";
       worksheet.getCell('A1').style = titleStyle;
 
@@ -201,14 +182,77 @@ export default {
       }
       // Add the title for the student data
       worksheet.getCell('A6').value = "STT";
+      worksheet.getCell('A6').alignment ={wrapText:true}
+      worksheet.getCell('A6').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
       worksheet.getCell('B6').value = "Mã sinh viên";
+      worksheet.getCell('B6').alignment ={wrapText:true}
+      worksheet.getCell('B6').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
       worksheet.getCell('C6').value = "Họ Đệm";
+      worksheet.getCell('C6').alignment ={wrapText:true}
+      worksheet.getCell('C6').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
       worksheet.getCell('D6').value = "Tên";
+      worksheet.getCell('D6').alignment ={wrapText:true}
+      worksheet.getCell('D6').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
       worksheet.getCell('E6').value = "Giới tính";
+      worksheet.getCell('E6').alignment ={wrapText:true}
+      worksheet.getCell('E6').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
       worksheet.getCell('F6').value = "Email";
+      worksheet.getCell('F6').alignment ={wrapText:true}
+      worksheet.getCell('F6').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
       worksheet.getCell('G6').value = "Số điện thoại";
+      worksheet.getCell('G6').alignment ={wrapText:true}
+      worksheet.getCell('G6').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
       worksheet.getCell('H6').value = "Ngày Sinh";
+      worksheet.getCell('H6').alignment ={wrapText:true}
+      worksheet.getCell('H6').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
       worksheet.getCell('I6').value = "Lớp quản lý";
+      worksheet.getCell('I6').alignment ={wrapText:true}
+      worksheet.getCell('I6').border = {
+        top: { style: 'thin', color: { argb: '00000000' } },
+        left: { style: 'thin', color: { argb: '00000000' } },
+        bottom: { style: 'thin', color: { argb: '00000000' } },
+        right: { style: 'thin', color: { argb: '00000000' } },
+      };
       for (let i=0;i<studentData.length;i++){
         const studentArray = Object.values(studentData[i])
         data.push(studentArray)
@@ -216,7 +260,17 @@ export default {
 
       // Add the data to the worksheet
       data.forEach((row) => {
-        worksheet.addRow(row);
+        const excelRow = worksheet.addRow(row);
+        row.forEach((column, index) => {
+          excelRow.getCell(index + 1).border = {
+            top: { style: 'thin', color: { argb: '00000000' } },
+            left: { style: 'thin', color: { argb: '00000000' } },
+            bottom: { style: 'thin', color: { argb: '00000000' } },
+            right: { style: 'thin', color: { argb: '00000000' } },
+          };
+
+          excelRow.getCell(index+1).alignment={wrapText:true}
+        });
       });
       const blob = await workbook.xlsx.writeBuffer();
 

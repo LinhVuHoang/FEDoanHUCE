@@ -1,4 +1,4 @@
-<template>
+<template style="font-family: Tahoma">
   <div>
     <!-- Authors Table Card -->
     <a-card>
@@ -178,8 +178,8 @@ export default ({
       params:{
         page:1,
         limit:10,
-        search:"608818",
-        hocky:"HK1 2023-2024",
+        search:undefined,
+        hocky:undefined,
         orderby:"MaMonHoc"
       },
       params1:{
@@ -197,8 +197,6 @@ export default ({
   created(){
     localStorage.setItem('link',this.$route.fullPath);
     this.getTKBDotHK()
-    this.getQuanLyDHP()
-    this.GetQuanLyDHP1();
   },
   methods:{
     async getTKBDotHK(){
@@ -324,6 +322,7 @@ export default ({
                   }
                   console.log(rs.data)
                   this.getQuanLyDHP()
+                  this.GetQuanLyDHP1();
                 }
             )
           },
@@ -342,6 +341,7 @@ export default ({
                   this.isChecked=false
 
                   this.getQuanLyDHP()
+                  this.GetQuanLyDHP1();
                 }
             )
           }
@@ -396,6 +396,7 @@ export default ({
       // Apply the shading style to the range A1 to H4
       // Add the title for the student data
       worksheet.getCell('A4').value = "STT";
+      worksheet.getCell('A4').alignment ={wrapText:true}
       worksheet.getCell('A4').border = {
         top: { style: 'thin', color: { argb: '00000000' } },
         left: { style: 'thin', color: { argb: '00000000' } },
@@ -403,6 +404,7 @@ export default ({
         right: { style: 'thin', color: { argb: '00000000' } },
       };
       worksheet.getCell('B4').value = "Mã lớp học phần";
+      worksheet.getCell('B4').alignment ={wrapText:true}
       worksheet.getCell('B4').border = {
         top: { style: 'thin', color: { argb: '00000000' } },
         left: { style: 'thin', color: { argb: '00000000' } },
@@ -410,6 +412,7 @@ export default ({
         right: { style: 'thin', color: { argb: '00000000' } },
       };
       worksheet.getCell('C4').value = "Mã môn học";
+      worksheet.getCell('C4').alignment ={wrapText:true}
       worksheet.getCell('C4').border = {
         top: { style: 'thin', color: { argb: '00000000' } },
         left: { style: 'thin', color: { argb: '00000000' } },
@@ -417,6 +420,7 @@ export default ({
         right: { style: 'thin', color: { argb: '00000000' } },
       };
       worksheet.getCell('D4').value = "Tên môn học";
+      worksheet.getCell('D4').alignment ={wrapText:true}
       worksheet.getCell('D4').border = {
         top: { style: 'thin', color: { argb: '00000000' } },
         left: { style: 'thin', color: { argb: '00000000' } },
@@ -424,6 +428,7 @@ export default ({
         right: { style: 'thin', color: { argb: '00000000' } },
       };
       worksheet.getCell('E4').value = "Số tín chỉ";
+      worksheet.getCell('E4').alignment ={wrapText:true}
       worksheet.getCell('E4').border = {
         top: { style: 'thin', color: { argb: '00000000' } },
         left: { style: 'thin', color: { argb: '00000000' } },
@@ -431,6 +436,7 @@ export default ({
         right: { style: 'thin', color: { argb: '00000000' } },
       };
       worksheet.getCell('F4').value = "Lớp môn học";
+      worksheet.getCell('F4').alignment ={wrapText:true}
       worksheet.getCell('F4').border = {
         top: { style: 'thin', color: { argb: '00000000' } },
         left: { style: 'thin', color: { argb: '00000000' } },
@@ -438,6 +444,7 @@ export default ({
         right: { style: 'thin', color: { argb: '00000000' } },
       };
       worksheet.getCell('G4').value = "Sĩ số sinh viên";
+      worksheet.getCell('G4').alignment ={wrapText:true}
       worksheet.getCell('G4').border = {
         top: { style: 'thin', color: { argb: '00000000' } },
         left: { style: 'thin', color: { argb: '00000000' } },
@@ -445,6 +452,7 @@ export default ({
         right: { style: 'thin', color: { argb: '00000000' } },
       };
       worksheet.getCell('H4').value = "Ngày thi";
+      worksheet.getCell('H4').alignment ={wrapText:true}
       worksheet.getCell('H4').border = {
         top: { style: 'thin', color: { argb: '00000000' } },
         left: { style: 'thin', color: { argb: '00000000' } },
@@ -452,6 +460,7 @@ export default ({
         right: { style: 'thin', color: { argb: '00000000' } },
       };
       worksheet.getCell('I4').value = "Giảng viên";
+      worksheet.getCell('I4').alignment ={wrapText:true}
       worksheet.getCell('I4').border = {
         top: { style: 'thin', color: { argb: '00000000' } },
         left: { style: 'thin', color: { argb: '00000000' } },
@@ -459,6 +468,7 @@ export default ({
         right: { style: 'thin', color: { argb: '00000000' } },
       };
       worksheet.getCell('J4').value = "Tổ bộ môn";
+      worksheet.getCell('J4').alignment ={wrapText:true}
       worksheet.getCell('J4').border = {
         top: { style: 'thin', color: { argb: '00000000' } },
         left: { style: 'thin', color: { argb: '00000000' } },
@@ -466,6 +476,7 @@ export default ({
         right: { style: 'thin', color: { argb: '00000000' } },
       };
       worksheet.getCell('K4').value = "Khoa chủ quản";
+      worksheet.getCell('K4').alignment ={wrapText:true}
       worksheet.getCell('K4').border = {
         top: { style: 'thin', color: { argb: '00000000' } },
         left: { style: 'thin', color: { argb: '00000000' } },
@@ -491,8 +502,11 @@ export default ({
             bottom: { style: 'thin', color: { argb: '00000000' } },
             right: { style: 'thin', color: { argb: '00000000' } },
           };
+
+          excelRow.getCell(index+1).alignment={wrapText:true}
         });
       });
+
       const blob = await workbook.xlsx.writeBuffer();
 
       // Create a Blob URL and trigger a download

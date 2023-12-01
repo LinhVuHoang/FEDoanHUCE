@@ -1,4 +1,4 @@
-<template>
+<template style="font-family: Tahoma">
 <div>
   <a-card>
     <a-row type="flex" align="middle">

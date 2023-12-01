@@ -1,4 +1,4 @@
-<template>
+<template style="font-family: Tahoma">
   <div>
     <a-card>
       <div>
@@ -47,19 +47,19 @@
       </div>
       <div style="margin-top: 50px" class="col-md-12 container" >
         <div class="table-wrap">
-          <table class="table table-bordered" style="--bs-table-bg: dodgerblue; border-right: black">
+          <table class="table table-bordered" style="--bs-table-bg: #2a8ecd; border-right: #5c5d62;font-family: Tahoma">
             <thead>
             <tr>
-              <th style="color: white">MaMH</th>
-              <th style="color: white">Tên MH</th>
-              <th style="color: white">Mã lớp</th>
-              <th style="color: white">STC</th>
-              <th style="color: white">Thứ</th>
-              <th style="color: white">Tiết BD</th>
-              <th style="color: white">ST</th>
-              <th style="color: white">Phòng</th>
-              <th style="color: white">Giảng viên</th>
-              <th style="color: white">Ngày Thi</th>
+              <th style="color: #f6fffa">MaMH</th>
+              <th style="color: #f6fffa">Tên MH</th>
+              <th style="color: #f6fffa">Mã lớp</th>
+              <th style="color: #f6fffa">STC</th>
+              <th style="color: #f6fffa">Thứ</th>
+              <th style="color: #f6fffa">Tiết BD</th>
+              <th style="color: #f6fffa">ST</th>
+              <th style="color: #f6fffa">Phòng</th>
+              <th style="color: #f6fffa">Giảng viên</th>
+              <th style="color: #f6fffa">Ngày Thi</th>
             </tr>
             </thead>
             <tbody>
@@ -67,29 +67,29 @@
               <template v-for="(dtc, dtcIndex) in dt.items">
                 <tr>
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.MaMonHoc }}</span>
+                    <span style="color: #002a5c">{{ dt.MaMonHoc }}</span>
                   </td>
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.TenMonHoc }}</span>
+                    <span style="color: #002a5c">{{ dt.TenMonHoc }}</span>
                   </td>
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.MaLopHoc }}</span>
+                    <span style="color: #002a5c">{{ dt.MaLopHoc }}</span>
                   </td>
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.SoTinChi }}</span>
+                    <span style="color: #002a5c">{{ dt.SoTinChi }}</span>
                   </td>
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.Thu }}</span>
+                    <span style="color: #002a5c">{{ dt.Thu }}</span>
                   </td>
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.TuTiet }}</span>
+                    <span style="color: #002a5c">{{ dt.TuTiet }}</span>
                   </td>
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.DenTiet - dt.TuTiet + 1 }}</span>
+                    <span style="color: #002a5c">{{ dt.DenTiet - dt.TuTiet + 1 }}</span>
                   </td>
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-              <span style="color: blue" v-if="dt.MaPhong">
-                <span style="color: blue">{{ dt.MaPhong }}</span>
+              <span style="color: #002a5c" v-if="dt.MaPhong">
+                <span style="color: #002a5c">{{ dt.MaPhong }}</span>
               </span>
                     <span v-else></span>
                   </td>
@@ -122,7 +122,7 @@
                       <p><strong>Số điện thoại:</strong> {{ dtc.SoDienThoai || '-' }}</p>
                       <p><strong>Email:</strong> {{ dtc.Email || '-' }}</p>
                       </template>
-                <span style="color: blue" v-if="dtc.HoDem && dtc.Ten">
+                <span style="color: #002a5c" v-if="dtc.HoDem && dtc.Ten">
                    <span>
                    {{ dtc.HoDem + ' ' + dtc.Ten }}
                   </span>
@@ -131,7 +131,7 @@
                     </a-popover>
                   </td>
                   <td v-if="dtcIndex==0" :rowspan="dt.items.length">
-                    <span style="color: blue">{{ dt.NgayThi.split("T")[0].split("-")[2]+"-"+dt.NgayThi.split("T")[0].split("-")[1]+"-"+dt.NgayThi.split("T")[0].split("-")[0] }}</span>
+                    <span style="color: #002a5c">{{ dt.NgayThi.split("T")[0].split("-")[2]+"-"+dt.NgayThi.split("T")[0].split("-")[1]+"-"+dt.NgayThi.split("T")[0].split("-")[0] }}</span>
                   </td>
                   <!--                <td>-->
                   <!--                  <span style="color: blue" v-if="dtc.HoDem != null && dtc.Ten !=null">{{ dtc.HoDem + ' ' + dtc.Ten }}</span>-->
