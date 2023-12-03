@@ -3,7 +3,7 @@
   <!-- Authors Table Card -->
   <a-card >
       <a-row type="flex" align="middle">
-        <img style="width: 100%" src="/images/banner.png" alt="Banner"/>
+        <img style="width: 100%" src="/../images/banner.png" alt="Banner"/>
         <a-col :span="24" :md="12" :lg="12" style="position: relative;">
 
           <h5 class="font-semibold m-0" v-if="data.length >0">Danh sách môn học đăng ký sinh viên {{data[0].HoTen}}</h5>

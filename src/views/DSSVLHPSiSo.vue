@@ -2,7 +2,7 @@
   <a-card :bordered="false" class="header-solid h-full" :bodyStyle="{padding: 0,}">
   <div>
     <a-row type="flex" align="middle">
-      <img style="width: 100%" src="/images/banner.png" alt="Banner"/>
+      <img style="width: 100%" src="/../images/banner.png" alt="Banner"/>
     </a-row>
     <div style="margin-top: 50px" class="col-md-12 container" >
 

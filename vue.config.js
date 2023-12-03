@@ -8,5 +8,8 @@ module.exports = {
 				args[0].title = 'HUCE PROJECT MADE BY LVH'
 				return args
 			})
-	}
+	},
+	publicPath: process.env.NODE_ENV === 'production'
+		? '/FEDoanHUCE/'
+		: '/'
 }

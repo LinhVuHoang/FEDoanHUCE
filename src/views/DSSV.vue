@@ -1,9 +1,9 @@
 <template style="font-family: Tahoma">
   <a-card :bordered="false" class="header-solid h-full" :bodyStyle="{padding: 0,}">
-  <div>
-    <a-row type="flex" align="middle">
-      <img style="width: 100%" src="/images/banner.png" alt="Banner"/>
-    </a-row>
+    <div>
+      <a-row type="flex" align="middle">
+        <img style="width: 100%" src="/../images/banner.png" alt="Banner"/>
+      </a-row>
     <div style="margin-top: 50px" class="col-md-12 container" >
       <label>Lớp: {{this.data[0].MaLopHoc}}</label><br>
       <label>Môn: {{this.data[0].TenMonHoc}}</label><br>

@@ -3,7 +3,7 @@
   <!-- Authors Table Card -->
   <a-card>
       <a-row type="flex" align="middle">
-        <img style="width: 100%" src="/images/banner.png" alt="Banner"/>
+        <img style="width: 100%" src="/../images/banner.png" alt="Banner"/>
       </a-row>
       <div>
         <a-form @submit="handleSearch" class="product__search-form">
