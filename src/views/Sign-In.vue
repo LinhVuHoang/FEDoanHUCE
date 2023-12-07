@@ -122,10 +122,12 @@
             localStorage.setItem('tieude',decodedJwtData.data.user.TieuDe);
             localStorage.setItem('issudung',decodedJwtData.data.user.IsSuDung);
             let rou = localStorage.getItem('link');
-            if(rou != ""|| rou !=undefined) {
-              this.$router.push(rou);
-            }else {
+            console.log(rou);
+            if(rou ==null) {
               this.$router.push({name:'TKBHocKy'})
+
+            }else {
+              this.$router.push(rou);
             }
           }else{
             this.$router.push({name:'Sign-In'})

@@ -312,7 +312,6 @@ export default {
       }
       this.getTKBHocKy();
     },
-
     async getTKBDotHK(){
       await  TKBHocKyService.getDotHocKy().then(
           rs=>{
