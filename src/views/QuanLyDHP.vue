@@ -306,7 +306,6 @@ export default ({
           }
       )
     },
-<<<<<<< HEAD
     updateStatus(Id,status){
 
       if(status==1) {
@@ -318,19 +317,6 @@ export default ({
                 rs => {
                   for (let i=0;i<this.data.length;i++){
                     if(this.data[i]['Id'] == Id){
-=======
-    updateStatus(id,status){
-
-      if(status==1) {
-        console.log(id)
-        this.$confirm({
-          title: 'Xác nhận đã nộp bản giấy',
-          onOk: () => {
-            QuanLyDiemHPService.Update(id,'1').then(
-                rs => {
-                  for (let i=0;i<this.data.length;i++){
-                    if(this.data[i]['Id'] == id){
->>>>>>> b354aa04c8ed4392ea4896c97b83e8e362ddac49
                       this.data[i]['checked']=true
                     }
                   }
@@ -341,21 +327,12 @@ export default ({
             )
           },
           onCancel: () => {
-
-<<<<<<< HEAD
             QuanLyDiemHPService.Update(Id,'0').then(
-=======
-            QuanLyDiemHPService.Update(id,'0').then(
->>>>>>> b354aa04c8ed4392ea4896c97b83e8e362ddac49
                 rs => {
                   console.log(rs.data)
                   document.getElementById("uncheckedbox_"+id).checked = false;
                   for (let i=0;i<this.data.length;i++){
-<<<<<<< HEAD
                     if(this.data[i]['Id'] == Id){
-=======
-                    if(this.data[i]['Id'] == id){
->>>>>>> b354aa04c8ed4392ea4896c97b83e8e362ddac49
                       this.data[i]['checked']=false
                       console.log(this.data[i]['checked'])
                     }
