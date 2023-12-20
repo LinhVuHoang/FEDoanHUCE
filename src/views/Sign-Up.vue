@@ -10,7 +10,7 @@
 		<div class="sign-up-header" style="background-image: url('images/bg-signup.jpg')">
 			<div class="content">
 				<h1 class="mb-5">Sign Up</h1>
-				<p class="text-lg">Use these awesome forms to login or create new account in your project for free.</p>
+				<p class="text-lg">Chào mừng đến với hệ thống thông tin phục vụ công tác quản lý đào tạo Đại học Xây dựng Hà Nội.</p>
 			</div>
 		</div>
 		<!-- / Sign Up Image And Headings -->
@@ -20,18 +20,18 @@
 			<template #title>
 				<h5 class="font-semibold text-center">Register With</h5>
 			</template>
-			<div class="sign-up-gateways">
-    			<a-button>
-					<img src="images/logos/logos-facebook.svg" alt="">
-				</a-button>
-    			<a-button>
-					<img src="images/logos/logo-apple.svg" alt="">
-				</a-button>
-    			<a-button>
-					<img src="images/logos/Google__G__Logo.svg.png" alt="">
-				</a-button>
-			</div>
-			<p class="text-center my-25 font-semibold text-muted">Or</p>
+<!--			<div class="sign-up-gateways">-->
+<!--    			<a-button>-->
+<!--					<img src="images/logos/logos-facebook.svg" alt="">-->
+<!--				</a-button>-->
+<!--    			<a-button>-->
+<!--					<img src="images/logos/logo-apple.svg" alt="">-->
+<!--				</a-button>-->
+<!--    			<a-button>-->
+<!--					<img src="images/logos/Google__G__Logo.svg.png" alt="">-->
+<!--				</a-button>-->
+<!--			</div>-->
+<!--			<p class="text-center my-25 font-semibold text-muted">Or</p>-->
 			<a-form
 				id="components-form-demo-normal-login"
 				:form="form"
@@ -41,18 +41,48 @@
 				<a-form-item class="mb-10">
 					<a-input
 						v-decorator="[
-						'name',
-						{ rules: [{ required: true, message: 'Please input your name!' }] },
+						'HoDem',
+						{ rules: [{ required: true, message: 'Vui lòng nhập họ của bạn!' }] },
 						]"
-						placeholder="Name"
+						placeholder="Họ Đệm"
 					>
 					</a-input>
 				</a-form-item>
+        <a-form-item class="mb-10">
+          <a-input
+              v-decorator="[
+						'Ten',
+						{ rules: [{ required: true, message: 'Vui lòng nhập tên của bạn!' }] },
+						]"
+              placeholder="Tên"
+          >
+          </a-input>
+        </a-form-item>
+        <a-form-item class="mb-10">
+          <a-input
+              v-decorator="[
+						'SoCMND',
+						{ rules: [{ required: true, message: 'Vui lòng nhập số chứng minh hoặc căn cước của bạn!' }] },
+						]"
+              placeholder="CMND/CCCD"
+          >
+          </a-input>
+        </a-form-item>
+        <a-form-item class="mb-10">
+          <a-input
+              v-decorator="[
+						'SoDienThoai',
+						{ rules: [{ required: true, message: 'Vui lòng nhập số điện thoại của bạn!' }] },
+						]"
+              placeholder="Số điện thoại"
+          >
+          </a-input>
+        </a-form-item>
 				<a-form-item class="mb-10">
 					<a-input
 						v-decorator="[
 						'email',
-						{ rules: [{ required: true, message: 'Please input your email!' }] },
+						{ rules: [{ required: true, message: 'Vui lòng nhập email của bạn!' }] },
 						]"
 						placeholder="Email"
 					>
@@ -62,13 +92,14 @@
 					<a-input
 						v-decorator="[
 						'password',
-						{ rules: [{ required: true, message: 'Please input your Password!' }] },
+						{ rules: [{ required: true, message: 'Vui lòng nhập password của bạn!' }] },
 						]"
 						type="password"
 						placeholder="Password"
 					>
 					</a-input>
 				</a-form-item>
+
 				<a-form-item class="mb-10">
 					<a-checkbox
 						v-decorator="[

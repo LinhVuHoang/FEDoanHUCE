@@ -119,8 +119,10 @@
           if(decodedJwtData.data.user !=undefined){
             localStorage.setItem('username',decodedJwtData.data.user.TaiKhoan);
             localStorage.setItem('password',decodedJwtData.data.user.MatKhau);
-            localStorage.setItem('tieude',decodedJwtData.data.user.TieuDe);
-            localStorage.setItem('issudung',decodedJwtData.data.user.IsSuDung);
+            localStorage.setItem('hoten',decodedJwtData.data.user.HoDem+" "+decodedJwtData.data.user.Ten);
+            localStorage.setItem('SoCMND',decodedJwtData.data.user.SoCMND);
+            localStorage.setItem('SoDienThoai',decodedJwtData.data.user.SoDienThoai);
+            localStorage.setItem('Role',decodedJwtData.data.user.Role);
             let rou = localStorage.getItem('link');
             console.log(rou);
             if(rou ==null) {
