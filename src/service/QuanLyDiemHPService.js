@@ -7,8 +7,8 @@ class QuanLyDiemHPService{
             params:params
         })
     }
-    Update(IDLopHocPhan,status){
-        return http.put(URL_GetAll+"/"+IDLopHocPhan+"/"+status)
+    Update(Id,status){
+        return http.put(URL_GetAll+"/"+Id+"/"+status)
     }
     getDS(params){
         return http.get(URL_GetDS,{
