@@ -2,7 +2,8 @@ import axios from "axios";
 import router from "../router";
 
 const configAxios= {
-    baseURL:"https://closing-enabled-polecat.ngrok-free.app/api/v1/", //baseURL` sẽ được gán vào trước url khi url là đường dẫn tương đối.
+    //baseURL:"https://closing-enabled-polecat.ngrok-free.app/api/v1/", //baseURL` sẽ được gán vào trước url khi url là đường dẫn tương đối.
+    baseURL:"http://localhost:3000/api/v1",
     timeout: 2*60*1000 //// `timeout` chỉ định số mili giây khi request vượt quá thời gian truy cập và bị hủy bỏ ở đây là 2 phút
 
 }

@@ -67,7 +67,7 @@
             <p class="m-0 font-regular" style="color: green" >Đã nộp</p>
           </div>
           <div class="author-info" v-else style="white-space: nowrap">
-            <input type="checkbox"  :id="'uncheckedbox_' + record.IDLopHocPhan"  @change="updateStatus(record.IDLopHocPhan,1)"/>
+            <input type="checkbox"  :id="'uncheckedbox_' + record.Id"  @change="updateStatus(record.Id,1)"/>
           </div>
 
         </template>
@@ -306,17 +306,17 @@ export default ({
           }
       )
     },
-    updateStatus(idlophocphan,status){
+    updateStatus(Id,status){
 
       if(status==1) {
-        console.log(idlophocphan)
+        console.log(Id)
         this.$confirm({
           title: 'Xác nhận đã nộp bản giấy',
           onOk: () => {
-            QuanLyDiemHPService.Update(idlophocphan,'1').then(
+            QuanLyDiemHPService.Update(Id,'1').then(
                 rs => {
                   for (let i=0;i<this.data.length;i++){
-                    if(this.data[i]['IDLopHocPhan'] == idlophocphan){
+                    if(this.data[i]['Id'] == Id){
                       this.data[i]['checked']=true
                     }
                   }
@@ -328,12 +328,12 @@ export default ({
           },
           onCancel: () => {
 
-            QuanLyDiemHPService.Update(idlophocphan,'0').then(
+            QuanLyDiemHPService.Update(Id,'0').then(
                 rs => {
                   console.log(rs.data)
                   document.getElementById("uncheckedbox_"+idlophocphan).checked = false;
                   for (let i=0;i<this.data.length;i++){
-                    if(this.data[i]['IDLopHocPhan'] == idlophocphan){
+                    if(this.data[i]['Id'] == Id){
                       this.data[i]['checked']=false
                       console.log(this.data[i]['checked'])
                     }
