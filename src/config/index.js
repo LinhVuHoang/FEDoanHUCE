@@ -11,6 +11,7 @@ const http = axios.create(configAxios) // tạo ra một đối tượng axios v
 const handlerError = (error)=>{
     if(error.response.status === 401){
         localStorage.removeItem('access_token');
+        localStorage.removeItem('Role')
         router.push({name:'Sign-In'})
         var errorrole = document.getElementById('error-password')
         errorrole.innerText="Sai tài khoản hoặc mật khẩu"

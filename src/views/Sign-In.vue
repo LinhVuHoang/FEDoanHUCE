@@ -126,10 +126,36 @@
             let rou = localStorage.getItem('link');
             console.log(rou);
             if(rou ==null) {
-              this.$router.push({name:'TKBHocKy'})
-
+              if(localStorage.getItem('Role')==1) {
+                this.$router.push({name: 'TKBHocKy'})
+              }else if (localStorage.getItem('Role')==2){
+                this.$router.push({name: 'TKBHocKy'})
+              }else {
+                this.$router.push({name:'TKBGiangDay'})
+              }
             }else {
-              this.$router.push(rou);
+              if(localStorage.getItem('Role')==1) {
+                this.$router.push(rou)
+              }else if (localStorage.getItem('Role')==2){
+                const UnacceptRouter =['/TKBGiangDay']
+                console.log(UnacceptRouter)
+                const hasPermission = UnacceptRouter.some(role => rou.includes(role));
+                if(!hasPermission){
+                  this.$router.push(rou)
+                }else{
+                  this.$router.push({name: 'TKBHocKy'})
+                }
+              }else {
+                const  AcceptRouter = ['/LichSuPH','/TKBGiangDay']
+                console.log(AcceptRouter)
+                const hasPermission = AcceptRouter.some(role => rou.includes(role));
+                console.log(hasPermission)
+                if(hasPermission){
+                  this.$router.push(rou)
+                }else{
+                  this.$router.push({name:'TKBGiangDay'})
+                }
+              }
             }
           }else{
             this.$router.push({name:'Sign-In'})
