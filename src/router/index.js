@@ -50,11 +50,20 @@ let routes = [
 		component: () => import('../views/Layout.vue'),
 	},
 	{
+		path:'/QLTaiKhoan',
+		name:'QLTaiKhoan',
+		layout: "dashboard",
+		meta: {
+			allowedRoles: [1], // Tất cả các vai trò được phép
+		},
+		component:()=>import('../views/QuanLyTaiKhoan')
+	},
+	{
 		path:'/TKBHocKy',
 		name:'TKBHocKy',
 		layout: "dashboard",
 		meta: {
-			allowedRoles: [1,2], // Tất cả các vai trò được phép
+			allowedRoles: [2], // Tất cả các vai trò được phép
 		},
 		component:()=>import('../views/TKBHocKy')
 	},
@@ -63,7 +72,7 @@ let routes = [
 		name:'TKBGiangDay',
 		layout: "dashboard",
 		meta: {
-			allowedRoles: [1,3], // Tất cả các vai trò được phép
+			allowedRoles: [2,3], // Tất cả các vai trò được phép
 		},
 		component:()=>import('../views/TKBGiangDay')
 	},
@@ -72,7 +81,7 @@ let routes = [
 		name:'TKBLichThi',
 		layout: "dashboard",
 		meta: {
-			allowedRoles: [1, 2], // Tất cả các vai trò được phép
+			allowedRoles: [2], // Tất cả các vai trò được phép
 		},
 		component:()=>import('../views/TKBLichThi')
 	},
@@ -81,7 +90,7 @@ let routes = [
 		name: 'DSSV',
 		layout: "dashboard",
 		meta: {
-			allowedRoles: [1, 2], // Tất cả các vai trò được phép
+			allowedRoles: [2], // Tất cả các vai trò được phép
 		},
 		component: () => import('../views/DSSV'),
 	},
@@ -90,7 +99,7 @@ let routes = [
 		name: 'DSSV_LHP_SiSo',
 		layout: "dashboard",
 		meta: {
-			allowedRoles: [1, 2], // Tất cả các vai trò được phép
+			allowedRoles: [2], // Tất cả các vai trò được phép
 		},
 		component: () => import('../views/DSSVLHPSiSo'),
 	},
@@ -99,7 +108,7 @@ let routes = [
 		name: 'DSDangKyHocPhan',
 		layout: "dashboard",
 		meta: {
-			allowedRoles: [1, 2], // Tất cả các vai trò được phép
+			allowedRoles: [2], // Tất cả các vai trò được phép
 		},
 		component: () => import('../views/SVDSDangKyHocPhan'),
 	},
@@ -108,7 +117,7 @@ let routes = [
 		name: 'QuanLyDHP',
 		layout: "dashboard",
 		meta: {
-			allowedRoles: [1, 2], // Tất cả các vai trò được phép
+			allowedRoles: [ 2], // Tất cả các vai trò được phép
 		},
 		component: () => import('../views/QuanLyDHP'),
 	},
@@ -117,7 +126,7 @@ let routes = [
 		name: 'DS_LHP_SiSo',
 		layout: "dashboard",
 		meta: {
-			allowedRoles: [1, 2], // Tất cả các vai trò được phép
+			allowedRoles: [2], // Tất cả các vai trò được phép
 		},
 		component: () => import('../views/DSLHPSiSo'),
 	},
@@ -126,7 +135,7 @@ let routes = [
 		name: 'KetQuaHocTap',
 		layout: "dashboard",
 		meta: {
-			allowedRoles: [1, 2], // Tất cả các vai trò được phép
+			allowedRoles: [2], // Tất cả các vai trò được phép
 		},
 		component: () => import('../views/KetQuaHocTap'),
 	},
@@ -135,7 +144,7 @@ let routes = [
 		name: 'LichSuPH',
 		layout: "dashboard",
 		meta: {
-			allowedRoles: [1, 2, 3], // Tất cả các vai trò được phép
+			allowedRoles: [2, 3], // Tất cả các vai trò được phép
 		},
 		component: () => import('../views/PHLichSu'),
 	},

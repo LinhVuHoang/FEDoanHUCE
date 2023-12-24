@@ -25,10 +25,10 @@
           </a-row>
         </a-form>
         <a-button type="primary" @click="handleSearch" html-type="submit">
-          Search
+          Tìm kiếm
         </a-button>
         <a-button type="primary" html-type="submit" @click="resetButton"  style="margin-left: 20px">
-          Reset
+          Làm mới
         </a-button>
       </div>
     <a-table :columns="columns" :data-source="data" :pagination="false">
@@ -132,7 +132,7 @@ export default ({
   },
   created(){
     localStorage.setItem('link',this.$route.fullPath);
-    this.getTKBDotHK()
+    this.getDangKyMonHoc()
   },
   methods:{
     async getTKBDotHK(){
@@ -149,6 +149,11 @@ export default ({
       )
     },
     async getDangKyMonHoc(){
+      await this.getTKBDotHK()
+      if (this.params.hocky ==undefined){
+        this.params.hocky = this.datahk[0].TenDot
+        console.log(this.params.hocky)
+      }
       await DangKyHocPhanService.getDSLHPSiSo(this.params).then(
           rs=>{
             try{

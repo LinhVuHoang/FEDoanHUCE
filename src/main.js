@@ -20,7 +20,12 @@ import DashboardLayout from './layouts/Dashboard.vue'
 import DashboardRTLLayout from './layouts/DashboardRTL.vue'
 import router from './router'
 import VueAgile from 'vue-agile'
+import VueToast from 'vue-toast-notification';
+// Import one of the available themes
+//import 'vue-toast-notification/dist/theme-default.css';
+import 'vue-toast-notification/dist/theme-bootstrap.css';
 
+Vue.use(VueToast);
 Vue.use(VueAgile)
 // import './plugins/click-away'
 import './scss/app.scss';

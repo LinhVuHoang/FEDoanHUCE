@@ -20,6 +20,7 @@
                     format="DD-MM-YYYY"
                     v-model="this.params.NgayBatDau"
                     @change="getDate1"
+                    placeholder="Ngày bắt đầu"
                 />
               </a-form-item>
             </a-col>
@@ -29,16 +30,17 @@
                     format="DD-MM-YYYY"
                     v-model="this.params.NgayKetThuc"
                     @change="getDate2"
+                    placeholder="Ngày kết thúc"
                 />
               </a-form-item>
             </a-col>
           </a-row>
         </a-form>
         <a-button type="primary" @click="handleSearch" html-type="submit">
-          Search
+          Tìm kiếm
         </a-button>
         <a-button type="primary" html-type="submit" @click="resetButton"  style="margin-left: 20px">
-          Reset
+          Làm mới
         </a-button>
       </div>
       <div style="margin-top: 50px" class="col-md-12 container" >

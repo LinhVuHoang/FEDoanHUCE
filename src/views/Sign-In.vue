@@ -10,8 +10,8 @@
 
 			<!-- Sign In Form Column -->
 			<a-col :span="24" :md="12" :lg="{span: 12, offset: 0}" :xl="{span: 6, offset: 2}" class="col-form">
-				<h1 class="mb-15">Sign In</h1>
-				<h5 class="font-regular text-muted">Enter your email and password to sign in</h5>
+				<h1 class="mb-15">Đăng nhập hệ thống</h1>
+				<h5 class="font-regular text-muted">Nhập tài khoản và mật khẩu của bạn để đăng nhập</h5>
 
 				<!-- Sign In Form -->
 				<a-form
@@ -26,23 +26,23 @@
 						placeholder="Email" />
             <span id="error-username" style="color: red"></span>
 					</a-form-item>
-					<a-form-item class="mb-5" label="Password" :colon="false">
+					<a-form-item class="mb-5" label="Mật khẩu" :colon="false">
 						<a-input
-                v-model="form.Password" type="password" placeholder="Password" />
+                v-model="form.Password" type="password" placeholder="Mật khẩu" />
             <span id="error-password" style="color: red"></span>
 					</a-form-item>
 					<a-form-item class="mb-10">
-            <a-switch v-model="rememberMe" /> Remember Me
+            <a-switch v-model="rememberMe" /> Nhớ tài khoản
 					</a-form-item>
 					<a-form-item>
 						<a-button type="primary" block html-type="submit" class="login-form-button">
-							SIGN IN
+							Đăng nhập
 						</a-button>
 					</a-form-item>
 				</a-form>
 				<!-- / Sign In Form -->
 
-				<p class="font-semibold text-muted">Don't have an account? <router-link to="/sign-up" class="font-bold text-dark">Sign Up</router-link></p>
+				<p class="font-semibold text-muted">Bạn không có tài khoản? <router-link to="/sign-up" class="font-bold text-dark">Đăng ký</router-link></p>
 			</a-col>
 			<!-- / Sign In Form Column -->
 
@@ -117,8 +117,8 @@
           console.log(decodedJwtData);
 
           if(decodedJwtData.data.user !=undefined){
-            localStorage.setItem('username',decodedJwtData.data.user.TaiKhoan);
-            localStorage.setItem('password',decodedJwtData.data.user.MatKhau);
+            localStorage.setItem('username',decodedJwtData.data.user.Email);
+            localStorage.setItem('password',decodedJwtData.data.user.Password);
             localStorage.setItem('hoten',decodedJwtData.data.user.HoDem+" "+decodedJwtData.data.user.Ten);
             localStorage.setItem('SoCMND',decodedJwtData.data.user.SoCMND);
             localStorage.setItem('SoDienThoai',decodedJwtData.data.user.SoDienThoai);
@@ -127,7 +127,7 @@
             console.log(rou);
             if(rou ==null) {
               if(localStorage.getItem('Role')==1) {
-                this.$router.push({name: 'TKBHocKy'})
+                this.$router.push({name: 'QLTaiKhoan'})
               }else if (localStorage.getItem('Role')==2){
                 this.$router.push({name: 'TKBHocKy'})
               }else {
@@ -135,9 +135,9 @@
               }
             }else {
               if(localStorage.getItem('Role')==1) {
-                this.$router.push(rou)
+                this.$router.push({name:'QLTaiKhoan'})
               }else if (localStorage.getItem('Role')==2){
-                const UnacceptRouter =['/TKBGiangDay']
+                const UnacceptRouter =['/TKBGiangDay','/QLTaiKhoan']
                 console.log(UnacceptRouter)
                 const hasPermission = UnacceptRouter.some(role => rou.includes(role));
                 if(!hasPermission){

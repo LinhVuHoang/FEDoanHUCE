@@ -24,10 +24,10 @@
           </a-row>
         </a-form>
         <a-button type="primary" @click="handleSearch" html-type="submit">
-          Search
+          Tìm kiếm
         </a-button>
         <a-button type="primary" html-type="submit" @click="resetButton"  style="margin-left: 20px">
-          Reset
+          Làm mới
         </a-button>
         <div>
           <a-radio-group style="float: right" @change="handleSearch" v-model="params.orderby">

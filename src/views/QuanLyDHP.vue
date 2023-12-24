@@ -25,10 +25,10 @@
           </a-row>
         </a-form>
         <a-button type="primary" @click="handleSearch" html-type="submit">
-          Search
+          Tìm kiếm
         </a-button>
         <a-button type="primary" html-type="submit" @click="resetButton"  style="margin-left: 20px">
-          Reset
+          Làm mới
         </a-button>
         <button v-if="data.length>0" type="button" class="download-btn" style="float: right" v-on:click="exportToExcel">
           <a-icon type="file-excel" theme="filled"/>
@@ -323,6 +323,11 @@ export default ({
                   console.log(rs.data)
                   this.getQuanLyDHP()
                   this.GetQuanLyDHP1();
+                  this.$toast.open({
+                    message: 'Xác nhận nộp thành công',
+                    type: 'success',
+                    // all of other options may go here
+                  });
                 }
             )
           },
@@ -330,7 +335,7 @@ export default ({
             QuanLyDiemHPService.Update(Id,'0').then(
                 rs => {
                   console.log(rs.data)
-                  document.getElementById("uncheckedbox_"+id).checked = false;
+                  document.getElementById("uncheckedbox_"+Id).checked = false;
                   for (let i=0;i<this.data.length;i++){
                     if(this.data[i]['Id'] == Id){
                       this.data[i]['checked']=false
