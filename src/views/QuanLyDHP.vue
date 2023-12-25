@@ -77,7 +77,7 @@
           </div>
         </template>
         <template slot="NgayNopBanGiay" slot-scope="text">
-          <div class="author-info"  >
+          <div class="author-info" v-if="text"  >
             <p class="m-0 font-regular"  >{{ text.split('T')[0].split('-')[2]+"-"+text.split('T')[0].split('-')[1]+"-"+text.split('T')[0].split('-')[0] }}</p>
           </div>
         </template>
@@ -216,8 +216,6 @@ export default ({
       await QuanLyDiemHPService.getAll(this.params).then(
           rs=>{
             try{
-              this.data=[]
-              console.log(rs)
               if(rs.data.records != undefined) {
                 this.data = rs.data.records
                 for (let i=0;i<this.data.length;i++){
@@ -246,11 +244,13 @@ export default ({
       this.params.limit = pageSize;
       this.params.page = current;
       this.getQuanLyDHP();
+      this.GetQuanLyDHP1();
     },
     onChange(page, pageSize) {
       this.params.page = page;
       this.params.limit = pageSize;
       this.getQuanLyDHP();
+      this.GetQuanLyDHP1();
     },
     handleSearch(e){
       e.preventDefault();
@@ -262,7 +262,7 @@ export default ({
       }
       this.getQuanLyDHP();
       this.GetQuanLyDHP1();
-      console.log(this.params);
+
 
     },
     async GetQuanLyDHP1(){

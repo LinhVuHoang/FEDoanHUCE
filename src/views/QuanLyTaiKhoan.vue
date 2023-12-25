@@ -162,12 +162,12 @@ export default ({
     onShowSizeChange(current, pageSize) {
       this.params.limit = pageSize;
       this.params.page = current;
-      this.getDangKyMonHoc();
+      this.getListAccount();
     },
     onChange(page, pageSize) {
       this.params.page = page;
       this.params.limit = pageSize;
-      this.getDangKyMonHoc();
+      this.getListAccount();
     },
     handleSearch(e){
       e.preventDefault();
