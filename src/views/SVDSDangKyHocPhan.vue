@@ -180,8 +180,16 @@ export default ({
               this.data=[]
               if(rs.data.records != undefined) {
                 this.data = rs.data.records
+                console.log("Oke")
+                console.log(this.data)
               }else {
                 this.data=[]
+                this.hocphi=undefined
+                this.$toast.open({
+                    message: 'Không có dữ liệu',
+                    type: 'warning',
+                    // all of other options may go here
+                  });
               }
               console.log(this.data)
               this.totalRecords = rs.data.filtered;
@@ -189,6 +197,11 @@ export default ({
             }catch (e){
               console.log(e)
               console.log("Có lỗi")
+              this.$toast.open({
+                message: 'Không có dữ liệu',
+                type: 'warning',
+                // all of other options may go here
+              });
             }
           }
       )

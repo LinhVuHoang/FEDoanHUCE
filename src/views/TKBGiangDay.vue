@@ -306,11 +306,21 @@ export default {
                 this.totalRecords = rs.data.filtered;
               }else {
                 this.totalRecords=0
+                this.$toast.open({
+                  message: 'Không có dữ liệu',
+                  type: 'warning',
+                  // all of other options may go here
+                });
               }
               console.log(this.data)
             }catch (e){
               console.log(e)
               console.log("Có lỗi")
+              this.$toast.open({
+                message: 'Không có dữ liệu',
+                type: 'warning',
+                // all of other options may go here
+              });
               this.totalRecords=0
             }
           }

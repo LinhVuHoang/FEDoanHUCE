@@ -138,7 +138,7 @@ export default {
   },
   created() {
     localStorage.setItem('link',this.$route.fullPath);
-    this.getPhongHocLS()
+   
   },
   methods:{
     // tạo ra một list date từ ngày bắt đầu đến ngày kết thúc
@@ -237,6 +237,11 @@ export default {
             }catch (e) {
               console.log(e)
               console.log("co loi")
+              this.$toast.open({
+                message: 'Không có dữ liệu',
+                type: 'warning',
+                // all of other options may go here
+              });
               this.data=[]
               console.log(this.data)
             }

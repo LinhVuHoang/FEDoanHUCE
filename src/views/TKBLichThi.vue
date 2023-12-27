@@ -279,6 +279,7 @@ export default {
       this.params.page = 1;
       console.log(this.params);
       this.getTKBLichThi();
+
     },
     async getTKBLichThi(){
       await this.getTKBDotHK()
@@ -294,15 +295,22 @@ export default {
             try{
               this.data=[]
               this.data =  this.groupDataByTenMonHocAndMaLop(rs.data.records)
+              console.log(this.data)
               if(rs.data.filtered >0) {
                 this.totalRecords = rs.data.filtered;
               }else {
                 this.totalRecords=0
+
               }
               console.log(this.data)
             }catch (e){
               console.log(e)
               console.log("Có lỗi")
+              this.$toast.open({
+                message: 'Không có dữ liệu',
+                type: 'warning',
+                // all of other options may go here
+              });
               this.totalRecords=0
             }
           }

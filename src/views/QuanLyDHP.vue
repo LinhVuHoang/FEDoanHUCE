@@ -224,6 +224,11 @@ export default ({
                 }
               }else {
                 this.data=[]
+                this.$toast.open({
+                  message: 'Không có dữ liệu',
+                  type: 'warning',
+                  // all of other options may go here
+                });
               }
               console.log(this.data)
               if(rs.data.filtered>0) {
@@ -235,6 +240,11 @@ export default ({
             }catch (e){
               console.log(e)
               console.log("Có lỗi")
+              this.$toast.open({
+                message: 'Không có dữ liệu',
+                type: 'warning',
+                // all of other options may go here
+              });
               this.totalRecords=0
             }
           }
