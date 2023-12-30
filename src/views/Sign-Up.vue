@@ -17,7 +17,7 @@
 			<template #title >
 				<h5 class="font-semibold text-center">Đăng ký</h5>
         <div class="content">
-          <p class="text-lg" style="white-space: nowrap">Chào mừng đến với hệ thống thông tin phục vụ công tác quản lý đào tạo Đại học Xây dựng Hà Nội.</p>
+          <p class="text-lg" style="white-space:pre-wrap;word-wrap: break-word;text-align: center">Chào mừng đến với hệ thống thông tin phục vụ công tác  quản lý đào tạo Đại học Xây dựng Hà Nội.</p>
         </div>
 			</template>
 <!--			<div class="sign-up-gateways">-->
