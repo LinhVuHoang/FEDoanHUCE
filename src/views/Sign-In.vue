@@ -70,7 +70,7 @@
 <script>
 
 	import LoginService from "@/service/LoginService";
-
+  const base64url = require('base64url');
   export default ({
 		data() {
 			return {
@@ -112,18 +112,20 @@
           let jwt = localStorage.getItem('access_token')
           console.log(jwt.split('.')[1])
           let jwtData = jwt.split('.')[1]
-          let decodedJwtJsonData = window.atob(jwtData)
+          let decodedJwtJsonData = base64url.decode(jwtData)
+          console.log(decodedJwtJsonData)
           let decodedJwtData = JSON.parse(decodedJwtJsonData)
           console.log(decodedJwtData);
 
           if(decodedJwtData.data.user !=undefined){
             localStorage.setItem('username',decodedJwtData.data.user.Email);
             localStorage.setItem('password',decodedJwtData.data.user.Password);
-            localStorage.setItem('hoten',decodedJwtData.data.user.HoDem+" "+decodedJwtData.data.user.Ten);
+            localStorage.setItem('HoTen',decodedJwtData.data.user.HoDem+" "+decodedJwtData.data.user.Ten);
             localStorage.setItem('SoCMND',decodedJwtData.data.user.SoCMND);
             localStorage.setItem('SoDienThoai',decodedJwtData.data.user.SoDienThoai);
             localStorage.setItem('Role',decodedJwtData.data.user.Role);
             let rou = localStorage.getItem('link');
+            console.log(localStorage.getItem('HoTen'))
             console.log(rou);
             if(rou ==null) {
               if(localStorage.getItem('Role')==1) {

@@ -116,7 +116,7 @@
         <p v-if="this.showError" style="color: red" class="text-red-500">Thông tin không hợp lệ. Vui lòng kiểm tra lại.</p>
 				<a-form-item>
 					<a-button type="primary" block html-type="submit" class="login-form-button">
-						SIGN UP
+						Đăng ký
 					</a-button>
 				</a-form-item>
 			</a-form>

@@ -187,7 +187,15 @@ let routes = [
 		},
 		component: () => import('../views/Profile.vue'),
 	},
-
+	{
+		path: '/ChangePass',
+		name: 'Change-Pass',
+		meta: {
+			layoutClass: 'layout-sign-up',
+			allowedRoles: [1, 2, 3],
+		},
+		component: () => import('../views/ChangePassword.vue'),
+	},
 	{
 		path: '/sign-in',
 		name: 'Sign-In',

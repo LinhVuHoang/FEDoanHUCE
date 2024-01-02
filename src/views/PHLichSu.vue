@@ -138,7 +138,6 @@ export default {
   },
   created() {
     localStorage.setItem('link',this.$route.fullPath);
-
   },
   methods:{
     // tạo ra một list date từ ngày bắt đầu đến ngày kết thúc
